@@ -9,7 +9,7 @@
       height: 100%;
       margin: 0;
       padding: 0;
-      background: #3c8d3f;
+      background: #c7f6b6;
       font-family: 'Segoe UI', sans-serif;
       overflow: hidden;
       touch-action: manipulation;
@@ -30,21 +30,22 @@
       position: absolute;
       top: 0; left: 0;
       z-index: 1;
-      /* izometrik etki için gerekirse buraya eklenebilir */
     }
     .field {
-      width: 80px;
-      height: 80px;
+      width: 160px;
+      height: 160px;
       position: absolute;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: rgba(0,0,0,0.02);
-      border-radius: 20px;
-      box-shadow: 0 3px 10px 0 rgba(30,60,30,0.11);
+      background: rgba(255,255,255,0.11);
+      border-radius: 32px;
+      box-shadow: 0 5px 22px 0 rgba(60,120,50,0.16), 0 1.5px 6px #a3d7a0 inset;
       cursor: pointer;
-      transition: box-shadow 0.13s;
+      transition: box-shadow 0.13s, background 0.15s;
       z-index: 2;
+      border: 3.5px solid #e2f6e2;
+      backdrop-filter: blur(2px);
     }
     .field-content {
       position: absolute;
@@ -54,77 +55,79 @@
       justify-content: center;
     }
     .field-plot {
-      width: 80px; height: 80px;
+      width: 160px; height: 160px;
       position: absolute;
       top: 0; left: 0;
       pointer-events: none;
       z-index: 1;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.16));
+      filter: drop-shadow(0 7px 16px rgba(0,0,0,0.14));
+      border-radius: 28px;
     }
     .field-crop {
-      width: 65px; height: 65px;
+      width: 130px; height: 130px;
       pointer-events: none;
       z-index: 2;
-      filter: drop-shadow(0 3px 8px rgba(0,0,0,0.13));
+      filter: drop-shadow(0 6px 18px rgba(0,0,0,0.12));
       position: relative;
     }
     .product-fly {
       position: absolute;
-      width: 108px;
-      height: 108px;
+      width: 216px;
+      height: 216px;
       pointer-events: none;
       z-index: 20;
       transition: transform 2.1s cubic-bezier(.17,.67,.54,1.26), opacity 2.1s;
-      /* 0.7s * 3 = 2.1s */
       will-change: transform, opacity;
     }
     #bottom-bar {
       width: 100vw;
-      max-width: 400px;
+      max-width: 500px;
       display: flex;
       justify-content: space-around;
       align-items: center;
-      background: rgba(32,48,24,0.18);
-      border-radius: 26px 26px 0 0;
-      box-shadow: 0 -3px 10px 0 rgba(30,60,30,0.15);
-      padding: 12px 0 16px 0;
+      background: rgba(60,120,50,0.10);
+      border-radius: 34px 34px 0 0;
+      box-shadow: 0 -3px 22px 0 rgba(100,160,90,0.10);
+      padding: 14px 0 20px 0;
       position: fixed;
       left: 50%;
       bottom: 0;
       transform: translateX(-50%);
       z-index: 10;
+      backdrop-filter: blur(1.5px);
     }
     .game-btn {
-      width: 55px;
-      height: 55px;
-      font-size: 30px;
+      width: 70px;
+      height: 70px;
+      font-size: 38px;
       border: none;
-      border-radius: 18px;
-      background: #e6ffd6;
+      border-radius: 19px;
+      background: #e9ffe1;
       box-shadow: 0 2px 8px 0 rgba(110,180,80,0.13);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 5px;
-      transition: background 0.15s, transform 0.11s;
+      margin: 0 8px;
+      transition: background 0.13s, transform 0.11s;
       cursor: pointer;
       position: relative;
       overflow: visible;
     }
     .game-btn:active {
-      background: #b5ffbc;
-      transform: scale(0.92);
+      background: #c2f6ba;
+      transform: scale(0.93);
     }
     #home-count {
       position: absolute;
-      right: 7px;
-      bottom: 3px;
-      font-size: 15px;
+      right: 10px;
+      bottom: 5px;
+      font-size: 20px;
       background: #fff;
-      border-radius: 7px;
-      padding: 2px 7px;
+      border-radius: 9px;
+      padding: 3px 10px;
       box-shadow: 0 0 2px #999;
       color: #444;
+      font-weight: 600;
     }
     /* Modal */
     #plant-modal {
@@ -133,50 +136,62 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -60%);
-      background: #fcfff7;
-      border-radius: 20px;
-      box-shadow: 0 3px 24px rgba(10,30,0,0.23);
-      padding: 30px 24px 18px 24px;
+      background: #fafff7;
+      border-radius: 26px;
+      box-shadow: 0 4px 36px rgba(60,120,30,0.17);
+      padding: 36px 26px 20px 26px;
       z-index: 100;
       text-align: center;
-      min-width: 240px;
+      min-width: 260px;
     }
     .plant-choice-row {
       display: flex;
       justify-content: center;
-      gap: 30px;
+      gap: 44px;
       margin: 0 0 5px 0;
     }
     .plant-choice-img {
-      width: 70px; height: 70px;
+      width: 105px; height: 105px;
       cursor: pointer;
-      border-radius: 14px;
-      border: 3px solid #eee;
-      box-shadow: 0 1px 7px rgba(30,60,20,0.08);
-      transition: border 0.15s, transform 0.15s;
+      border-radius: 16px;
+      border: 4px solid #ecf7eb;
+      box-shadow: 0 3px 14px rgba(80,120,50,0.11);
+      transition: border 0.13s, transform 0.13s, box-shadow 0.13s;
+      background: #f6fff2;
     }
     .plant-choice-img:active {
-      border: 3px solid #bff8ab;
-      transform: scale(0.94);
+      border: 4px solid #bbffba;
+      transform: scale(0.97);
+      box-shadow: 0 1px 8px #befbc7;
     }
     #plant-modal button {
-      margin: 14px 10px 0 10px;
-      font-size: 17px;
+      margin: 18px 12px 0 12px;
+      font-size: 19px;
       background: #f7e2e0;
       border: none;
-      padding: 7px 16px;
-      border-radius: 12px;
+      padding: 8px 20px;
+      border-radius: 13px;
       cursor: pointer;
       transition: background 0.14s;
       color: #333;
+      font-weight: 600;
     }
     #plant-modal button:active {
       background: #f3b9b2;
     }
-    @media (max-width: 500px) {
-      #field-area {
-        /* mobilde daha rahat hareket için boş bırak */
-      }
+    @media (max-width: 700px) {
+      .field, .field-plot { width: 120px; height: 120px;}
+      .field-crop { width: 90px; height: 90px;}
+      .product-fly { width: 162px; height: 162px;}
+      .plant-choice-img { width: 74px; height: 74px;}
+    }
+    @media (max-width: 420px) {
+      .field, .field-plot { width: 90px; height: 90px;}
+      .field-crop { width: 60px; height: 60px;}
+      .product-fly { width: 121px; height: 121px;}
+      .plant-choice-img { width: 54px; height: 54px;}
+      #bottom-bar { max-width: 99vw;}
+      #plant-modal { min-width: 150px; padding: 16px 4px 9px 4px;}
     }
   </style>
 </head>
@@ -213,7 +228,6 @@
     let homeCount = 0;
     let plantMode = false;
     let lastPlantPos = {x:0, y:0};
-    let tempFieldIndex = null; // Modal için
     let fieldArea = document.getElementById("field-area");
 
     // Görseller
@@ -229,22 +243,20 @@
     // Tarla ekme modunu aç
     document.getElementById("plant-btn").onclick = () => {
       plantMode = true;
-      document.getElementById("plant-btn").style.background = "#e8b888";
+      document.getElementById("plant-btn").style.background = "#f3d298";
     };
 
     // Oyun alanına tıklayınca (sadece ekim modunda)
     fieldArea.onclick = function(e) {
       if (!plantMode) return;
-      // Sadece alt bar ve modal dışında bir yere tıklamayı kabul et
       if (e.target !== fieldArea) return;
-      // Koordinatları al
       const rect = fieldArea.getBoundingClientRect();
-      let x = e.clientX - rect.left - 40; // tarla ortasına göre hizala
-      let y = e.clientY - rect.top - 40;
+      let x = e.clientX - rect.left - 80; // (160/2)
+      let y = e.clientY - rect.top - 80;
       lastPlantPos = {x, y};
       openModal();
       plantMode = false;
-      document.getElementById("plant-btn").style.background = "#e6ffd6";
+      document.getElementById("plant-btn").style.background = "#e9ffe1";
     };
 
     // Modal aç/kapat
@@ -272,7 +284,6 @@
         ev.stopPropagation();
         onFieldClick(div, field);
       };
-      // İçerik ekle
       renderFieldContent(div, type);
       fieldArea.appendChild(div);
     }
@@ -297,20 +308,19 @@
 
     // Tarlaya tıklayınca ürün toplama (her dokunuşta 2 ürün)
     function onFieldClick(div, field) {
-      // 2 kez animasyon
       for (let k=0;k<2;k++) {
         setTimeout(()=>flyProduct(div, field.type), k*200);
       }
     }
 
-    // Ürün uçma animasyonu
+    // Ürün uçma animasyonu (2 kat büyük ve daha uzun)
     function flyProduct(div, type) {
       const rect = div.getBoundingClientRect();
       const img = document.createElement('img');
       img.src = IMAGES[type];
       img.className = "product-fly";
-      img.style.left = (rect.left + rect.width/2 - 54) + "px";
-      img.style.top = (rect.top + rect.height/2 - 54) + "px";
+      img.style.left = (rect.left + rect.width/2 - 108) + "px";
+      img.style.top = (rect.top + rect.height/2 - 108) + "px";
       img.style.opacity = 1;
       img.style.position = "fixed";
       img.style.transform = "scale(1)";
@@ -319,10 +329,9 @@
       // Hedef: ev butonunun konumu
       const homeBtn = document.getElementById("home-btn");
       const hrect = homeBtn.getBoundingClientRect();
-      // Uçuş animasyonu
       setTimeout(()=>{
-        img.style.transform = `translate(${hrect.left-rect.left+16}px, ${hrect.top-rect.top+6}px) scale(0.45)`;
-        img.style.opacity = 0.2;
+        img.style.transform = `translate(${hrect.left-rect.left+20}px, ${hrect.top-rect.top+8}px) scale(0.45)`;
+        img.style.opacity = 0.18;
       },30);
       setTimeout(()=>{
         img.remove();
