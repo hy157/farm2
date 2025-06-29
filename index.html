@@ -49,60 +49,6 @@
       #money-bar, #money-value, #money-bar .dollar-emoji {font-size: 27px;}
       .game-btn {width: 65px;height: 65px;font-size: 34px;}
     }
-    /* ---- SATIŞ EKRANI 2 KAT BÜYÜK ---- */
-    #home-modal {
-      min-width: 450px !important;
-      max-width: 98vw !important;
-      padding: 84px 34px 44px 34px !important;
-      border-radius: 56px !important;
-      font-size: 1.92rem !important;
-    }
-    .sell-row {
-      gap: 72px !important;
-      margin: 53px 0 24px 0 !important;
-    }
-    .sell-img {
-      width: 164px !important;
-      height: 164px !important;
-      border-radius: 34px !important;
-    }
-    .sell-price {
-      font-size: 66px !important;
-      border-radius: 20px !important;
-      padding: 12px 36px !important;
-    }
-    .sell-count {
-      font-size: 56px !important;
-      padding: 8px 24px !important;
-      border-radius: 20px !important;
-    }
-    .close-x {
-      font-size: 72px !important;
-      top: 27px !important;
-      right: 40px !important;
-    }
-    .game-btn[style*="width:42px"] {
-      width: 120px !important;
-      height: 120px !important;
-      font-size: 48px !important;
-      border-radius: 32px !important;
-      min-width: 0;
-      min-height: 0;
-      padding: 0 !important;
-    }
-    @media (max-width: 600px) {
-      #home-modal {
-        min-width: 220px !important;
-        font-size: 1.15rem !important;
-        padding: 32px 8px 18px 8px !important;
-      }
-      .sell-img {width: 82px !important; height: 82px !important;}
-      .sell-price {font-size: 32px !important;}
-      .sell-count {font-size: 28px !important;}
-      .game-btn[style*="width:42px"] {width: 56px !important; height: 56px !important; font-size: 24px !important;}
-      .close-x {font-size: 36px !important;}
-    }
-    /* ---- /SATIŞ EKRANI 2 KAT BÜYÜK ---- */
   </style>
 </head>
 <body>
@@ -291,7 +237,7 @@
       const homeBtn = document.getElementById("home-btn");
       const hrect = homeBtn.getBoundingClientRect();
       setTimeout(()=>{
-        img.style.transform = translate(${hrect.left-rect.left+20}px, ${hrect.top-rect.top+8}px) scale(0.45);
+        img.style.transform = `translate(${hrect.left-rect.left+20}px, ${hrect.top-rect.top+8}px) scale(0.45)`;
         img.style.opacity = 0.18;
       },30);
       setTimeout(()=>{
@@ -330,7 +276,7 @@
         setTimeout(()=>{
           let tx = rectBar.left + rectBar.width/2 - fromX + (Math.random()-0.5)*20;
           let ty = rectBar.top + rectBar.height/2 - fromY + (Math.random()-0.5)*20;
-          dollar.style.transform = translate(${tx}px, ${ty}px) scale(0.6);
+          dollar.style.transform = `translate(${tx}px, ${ty}px) scale(0.6)`;
           dollar.style.opacity = 0.15;
         },30+60*i);
         setTimeout(()=>{dollar.remove();},2100+60*i);
