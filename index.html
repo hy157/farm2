@@ -49,6 +49,60 @@
       #money-bar, #money-value, #money-bar .dollar-emoji {font-size: 27px;}
       .game-btn {width: 65px;height: 65px;font-size: 34px;}
     }
+    /* ---- SATIŞ EKRANI BİRAZ KÜÇÜK ---- */
+    #home-modal {
+      min-width: 220px !important;
+      max-width: 90vw !important;
+      padding: 28px 10px 13px 10px !important;
+      border-radius: 20px !important;
+      font-size: 0.93rem !important;
+    }
+    .sell-row {
+      gap: 20px !important;
+      margin: 17px 0 8px 0 !important;
+    }
+    .sell-img {
+      width: 48px !important;
+      height: 48px !important;
+      border-radius: 10px !important;
+    }
+    .sell-price {
+      font-size: 22px !important;
+      border-radius: 7px !important;
+      padding: 3px 13px !important;
+    }
+    .sell-count {
+      font-size: 18px !important;
+      padding: 2px 8px !important;
+      border-radius: 6px !important;
+    }
+    .close-x {
+      font-size: 27px !important;
+      top: 10px !important;
+      right: 16px !important;
+    }
+    .game-btn[style*="width:42px"] {
+      width: 34px !important;
+      height: 34px !important;
+      font-size: 15px !important;
+      border-radius: 8px !important;
+      min-width: 0;
+      min-height: 0;
+      padding: 0 !important;
+    }
+    @media (max-width: 600px) {
+      #home-modal {
+        min-width: 140px !important;
+        font-size: 0.83rem !important;
+        padding: 11px 4px 5px 4px !important;
+      }
+      .sell-img {width: 27px !important; height: 27px !important;}
+      .sell-price {font-size: 13px !important;}
+      .sell-count {font-size: 10px !important;}
+      .game-btn[style*="width:42px"] {width: 17px !important; height: 17px !important; font-size: 7px !important;}
+      .close-x {font-size: 15px !important;}
+    }
+    /* ---- /SATIŞ EKRANI BİRAZ KÜÇÜK ---- */
   </style>
 </head>
 <body>
@@ -98,6 +152,7 @@
       </div>
     </div>
   </div>
+
   <script>
     let fields = []; // {x, y, type, dried, div, timer, created}
     let inventory = {wheat: 0, strawberry: 0};
