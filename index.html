@@ -9,7 +9,11 @@
     #game {width: 100vw;height: 100vh;display: flex;flex-direction: column;justify-content: space-between;align-items: center;}
     #money-bar {width: 100vw;display: flex;align-items: center;justify-content: center;position: fixed;top: 0;left: 0;z-index: 50;background: rgba(255,255,255,0.38);box-shadow: 0 2px 15px rgba(30,60,30,0.05);height: 70px;font-size: 40px;font-weight: bold;letter-spacing: 2px;padding: 7px 0 7px 0;user-select: none;}
     #money-bar .dollar-emoji {font-size: 40px;margin-right: 18px;margin-top: 2px;filter: drop-shadow(0 1px 2px #8bce96);}
-    #money-value {font-size: 40px;color: #25a16b;text-shadow: 0 1px 0 #fff, 0 1px 10px #98f1b3;margin-right: 8px;font-weight: 700;min-width: 90px;display: inline-block;text-align: right;letter-spacing: 1px;}
+    #money-value {font-size: 40px;color: #25a16b;text-shadow: 0 1px 0 #fff, 0 1px 10px #98f1b3;margin-right: 18px;font-weight: 700;min-width: 90px;display: inline-block;text-align: right;letter-spacing: 1px;}
+    /* Elmas Barı */
+    #gem-bar {display: flex;align-items: center;margin-left: 8px;}
+    #gem-bar .gem-emoji {font-size: 34px;margin-right: 10px;margin-top: 1px;filter: drop-shadow(0 2px 4px #70c0e0);}
+    #gem-value {font-size: 32px;color: #2a90c6;text-shadow: 0 1px 0 #fff, 0 1px 10px #88d8fc;font-weight: 700;min-width: 55px;display: inline-block;text-align: right;letter-spacing: 1px;transition: color 0.32s;}
     #field-area {flex: 1 1 auto;width: 100vw;height: 100vh;position: absolute;top: 0;left: 0;z-index: 1;}
     .field {width: 160px;height: 160px;position: absolute;display: flex;align-items: center;justify-content: center;background: rgba(255,255,255,0.11);border-radius: 32px;box-shadow: 0 8px 28px 0 rgba(60,120,50,0.16), 0 1.5px 6px #a3d7a0 inset;cursor: pointer;transition: box-shadow 0.13s, background 0.15s;z-index: 2;border: 5px solid #e2f6e2;backdrop-filter: blur(2px);}
     .field-content {position: absolute;top: 0;left: 0;width: 100%;height: 100%;display: flex;align-items: center;justify-content: center;}
@@ -20,6 +24,7 @@
     .timer-bar-inner {height:100%;background:linear-gradient(90deg,#92d957,#f6c10e);border-radius:11px;width:100%;transition:width 0.9s linear;}
     .timer-bar-text {font-size: 19px;color:#33631b;font-weight: bold;text-shadow: 0 1px 0 #fff;}
     .product-fly, .money-fly {position: absolute;width: 216px;height: 216px;pointer-events: none;z-index: 1001;transition: transform 2.1s cubic-bezier(.17,.67,.54,1.26), opacity 2.1s;will-change: transform, opacity;font-size: 100px;text-align: center;display: flex;align-items: center;justify-content: center;color: #25a16b;filter: drop-shadow(0 0 14px #d0ffd4);}
+    .gem-fly {position: absolute;width: 120px;height: 120px;pointer-events: none;z-index: 1001;transition: transform 1.4s cubic-bezier(.27,.87,.44,1.19), opacity 1.4s;will-change: transform, opacity;font-size: 56px;text-align: center;display: flex;align-items: center;justify-content: center;color: #2a90c6;filter: drop-shadow(0 0 8px #bbf3fc);}
     #bottom-bar {width: 100vw;max-width: 650px;display: flex;justify-content: space-around;align-items: center;background: rgba(60,120,50,0.10);border-radius: 45px 45px 0 0;box-shadow: 0 -3px 22px 0 rgba(100,160,90,0.10);padding: 24px 0 32px 0;position: fixed;left: 50%;bottom: 0;transform: translateX(-50%);z-index: 10;backdrop-filter: blur(1.5px);}
     .game-btn {width: 110px;height: 110px;font-size: 60px;border: none;border-radius: 35px;background: #e9ffe1;box-shadow: 0 2px 16px 0 rgba(110,180,80,0.14);display: flex;align-items: center;justify-content: center;margin: 0 18px;transition: background 0.13s, transform 0.11s;cursor: pointer;position: relative;overflow: visible;}
     .game-btn:active {background: #c2f6ba;transform: scale(0.94);}
@@ -31,23 +36,125 @@
     .plant-price {font-size: 36px;color: #29b56e;font-weight: 600;background: #e4ffd6;padding: 6px 27px;border-radius: 17px;box-shadow: 0 1px 2px #cdebc9;margin-bottom: 2px;}
     #plant-modal button {margin: 23px 17px 0 17px;font-size: 25px;background: #f7e2e0;border: none;padding: 13px 40px;border-radius: 18px;cursor: pointer;transition: background 0.14s;color: #333;font-weight: 600;}
     #plant-modal button:active {background: #f3b9b2;}
-    #home-modal {display: none;position: fixed;top: 50%;left: 50%;transform: translate(-50%, -54%);background: #fdfff6;border-radius: 28px;box-shadow: 0 4px 28px rgba(80,130,30,0.13);padding: 42px 17px 21px 17px;z-index: 3000;min-width: 250px;text-align: center;user-select: none;}
+    /* Satış Modalı (90%) */
+    #home-modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -54%);
+      background: #fdfff6;
+      border-radius: 28px;
+      box-shadow: 0 4px 28px rgba(80,130,30,0.13);
+      padding: 42px 17px 21px 17px;
+      z-index: 3000;
+      text-align: center;
+      user-select: none;
+      width: 90vw;
+      max-width: 390px;
+      min-width: unset;
+    }
     .close-x {position: absolute;top: 13px;right: 18px;font-size: 38px;font-weight: 600;color: #d1735a;cursor: pointer;background: none;border: none;z-index: 1;transition: color 0.14s, transform 0.13s;}
     .close-x:active {color: #ff3c1e;transform: scale(1.08) rotate(9deg);}
-    .sell-row {display: flex;flex-direction: row;align-items: center;gap: 36px;margin: 30px 0 15px 0;justify-content: center;}
-    .sell-img {width: 80px;height: 80px;border-radius: 17px;background: #f8fff2;box-shadow: 0 1px 8px #d5ffe5;border: 3px solid #e0fae8;display: flex;align-items: center;justify-content: center;}
-    .sell-price {font-size: 33px;font-weight: 700;color: #228750;background: #e3ffe6;border-radius: 13px;padding: 6px 21px;box-shadow: 0 1px 2px #d2f8c9;margin-left: 3px;}
-    .sell-count {font-size: 28px;color: #5f6265;font-weight: 500;margin-right: 10px;background: #fafcff;padding: 4px 10px;border-radius: 11px;border: 1.8px solid #e1e3e3;}
+    .sell-row {display: flex;flex-direction: row;align-items: center;gap: 22px;margin: 30px 0 15px 0;justify-content: center;}
+    .sell-img {width: 72px;height: 72px;border-radius: 17px;background: #f8fff2;box-shadow: 0 1px 8px #d5ffe5;border: 3px solid #e0fae8;display: flex;align-items: center;justify-content: center;}
+    .sell-price {font-size: 28px;font-weight: 700;color: #228750;background: #e3ffe6;border-radius: 13px;padding: 6px 21px;box-shadow: 0 1px 2px #d2f8c9;margin-left: 3px;}
+    .sell-count {font-size: 22px;color: #5f6265;font-weight: 500;margin-right: 10px;background: #fafcff;padding: 4px 10px;border-radius: 11px;border: 1.8px solid #e1e3e3;}
+    .game-btn[style] {width: 34px !important;height: 34px !important;font-size: 16px !important;}
+    /* İşçi Kiralama Modalı */
+    #worker-modal {
+      display: none;
+      position: fixed;
+      top: 54%;
+      left: 50%;
+      transform: translate(-50%, -55%);
+      background: #ecfaff;
+      border-radius: 26px;
+      box-shadow: 0 4px 28px rgba(0,110,160,0.13);
+      padding: 36px 18px 21px 18px;
+      z-index: 3001;
+      text-align: center;
+      min-width: 220px;
+      width: 86vw;
+      max-width: 350px;
+      user-select: none;
+      font-size: 19px;
+    }
+    #worker-modal .worker-opt-row {
+      display: flex;justify-content: center;gap: 36px;margin-bottom: 17px;margin-top: 4px;
+    }
+    #worker-modal .worker-opt-wrap {
+      display: flex;flex-direction: column;align-items: center;
+    }
+    #worker-modal .worker-img {
+      width: 76px;height: 76px;border-radius: 13px;box-shadow: 0 3px 16px #b5f3ff;background: #fff;border: 3px solid #c8eaf9;display: flex;align-items: center;justify-content: center;font-size: 48px;margin-bottom: 8px;position: relative;
+    }
+    #worker-modal .worker-price {font-size: 28px;color: #2a90c6;font-weight: 600;background: #e4fcff;padding: 4px 19px;border-radius: 13px;box-shadow: 0 1px 2px #b1e8f2;}
+    #worker-modal button {margin: 13px 9px 0 9px;font-size: 21px;background: #bee9fa;border: none;padding: 10px 30px;border-radius: 14px;cursor: pointer;transition: background 0.14s;color: #2a3d4a;font-weight: 600;}
+    #worker-modal button:active {background: #75daff;}
+    /* Sağ işçi göstergesi */
+    #worker-indicator-wrap {
+      position: fixed;
+      top: 110px;
+      right: 10px;
+      z-index: 120;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+      opacity: 0.80;
+      transition: opacity 0.3s;
+      font-size: 19px;
+    }
+    .worker-indicator {
+      display: flex;align-items: center;gap: 6px;
+      background: #f2faffcc;
+      border-radius: 13px;
+      box-shadow: 0 2px 8px #d9f4ff;
+      padding: 6px 14px 6px 9px;
+      min-width: 74px;
+      font-size: 19px;
+      font-weight: 600;
+      color: #2986c6;
+      user-select: none;
+      filter: blur(0px);
+    }
+    .worker-indicator .timer {
+      font-size: 15px;
+      font-weight: 500;
+      color: #45a8db;
+      margin-left: 2px;
+      min-width: 38px;
+      text-align: right;
+      letter-spacing: 0.5px;
+    }
     @media (max-width: 900px) {
       .field, .field-plot { width: 110px; height: 110px;}
       .field-crop { width: 80px; height: 80px;}
       .product-fly, .money-fly { width: 150px; height: 150px; font-size: 70px;}
       .plant-choice-img { width: 90px; height: 90px;}
-      .sell-img { width: 55px; height: 55px;}
+      /* Satış modal boyutları */
+      #home-modal {
+        width: 90vw;
+        max-width: 97vw;
+        min-width: unset;
+      }
+      .sell-img { width: 44px; height: 44px;}
+      .sell-price { font-size: 19px;}
+      .sell-count { font-size: 14px;}
+      .sell-row { gap: 12px;}
+      .game-btn[style] {width: 25px !important;height: 25px !important;font-size: 12px !important;}
       .timer-bar {width:64px;}
       #plant-modal, #home-modal {min-width: 150px;}
       #money-bar, #money-value, #money-bar .dollar-emoji {font-size: 27px;}
+      #gem-bar .gem-emoji {font-size: 22px;}
+      #gem-value {font-size: 19px;}
       .game-btn {width: 65px;height: 65px;font-size: 34px;}
+      #worker-indicator-wrap {font-size: 13px;}
+      .worker-indicator {min-width: 46px; padding: 4px 7px;}
+      #worker-modal .worker-img {width: 44px;height: 44px;font-size: 24px;}
+      #worker-modal {font-size: 15px;}
+      #worker-modal .worker-price {font-size: 14px;}
     }
   </style>
 </head>
@@ -56,6 +163,11 @@
     <div id="money-bar">
       <span class="dollar-emoji">💵</span>
       <span id="money-value">100</span>
+      <!-- Elmas barı ekleniyor -->
+      <span id="gem-bar">
+        <span class="gem-emoji">💎</span>
+        <span id="gem-value">10</span>
+      </span>
     </div>
     <div id="field-area"></div>
     <!-- Tarla Ekim Modalı -->
@@ -78,7 +190,7 @@
     <div id="bottom-bar">
       <button class="game-btn" id="plant-btn" title="Ekim Yap (Kazma)">⛏️</button>
       <button class="game-btn" id="home-btn" title="Depo/Ev">🏠</button>
-      <button class="game-btn" id="empty-btn" title="Buton 3">🧺</button>
+      <button class="game-btn" id="empty-btn" title="İşçi Kirala">🧺</button>
       <button class="game-btn" id="remove-btn" title="Tarlaları Sil">❌</button>
     </div>
     <!-- Satış Modalı -->
@@ -97,11 +209,33 @@
         <button class="game-btn" style="width:42px;height:42px;font-size:22px;" onclick="sellProduct('strawberry')">Sat</button>
       </div>
     </div>
+    <!-- İşçi Kiralama Modalı -->
+    <div id="worker-modal">
+      <button class="close-x" onclick="closeWorkerModal()">×</button>
+      <div style="font-size:22px;font-weight:600;color:#299cc3;margin-bottom:13px;">5 Dakikalık İşçi Kirala</div>
+      <div class="worker-opt-row">
+        <div class="worker-opt-wrap">
+          <div class="worker-img" id="hire-strawberry-btn" style="cursor:pointer;" onclick="hireWorker('strawberry')">🍓<span style="position:absolute;right:1px;bottom:0;font-size:27px;">👷‍♂️</span></div>
+          <span class="worker-price">💎 3</span>
+        </div>
+        <div class="worker-opt-wrap">
+          <div class="worker-img" id="hire-wheat-btn" style="cursor:pointer;" onclick="hireWorker('wheat')">🌾<span style="position:absolute;right:1px;bottom:0;font-size:27px;">👷‍♂️</span></div>
+          <span class="worker-price">💎 2</span>
+        </div>
+      </div>
+      <div>
+        <button onclick="closeWorkerModal()">Vazgeç</button>
+      </div>
+    </div>
+    <!-- Sağda İşçi Göstergesi -->
+    <div id="worker-indicator-wrap"></div>
   </div>
   <script>
-    let fields = []; // {x, y, type, dried, div, timer, created}
+    // OYUN DEĞİŞKENLERİ
+    let fields = []; // {x, y, type, dried, div, timer, created, workerId, workerLock}
     let inventory = {wheat: 0, strawberry: 0};
     let money = 100;
+    let gems = 10;
     let plantMode = false;
     let lastPlantPos = {x:0, y:0};
     const PRICES = {wheat: 40, strawberry: 60};
@@ -112,6 +246,60 @@
     const DRY_IMG = "img/Plot.webp";
     const IMAGES = {wheat: "img/wheat.webp", strawberry: "img/strawberry.png"};
     const PLOTS = {wheat: "img/Plot3.webp", strawberry: "img/PlotS3.webp"};
+
+    // --- ELMA BAR ANİMASYONU
+    function updateGemBar(animated, amount) {
+      const bar = document.getElementById("gem-value");
+      if(!animated) {
+        bar.textContent = gems;
+        return;
+      }
+      const old = Number(bar.textContent);
+      const diff = gems - old;
+      if(diff === 0) return;
+      // animasyon
+      let step = 0;
+      let steps = 18;
+      let inc = diff/steps;
+      function animate() {
+        step++;
+        let val = old + Math.round(inc*step);
+        bar.textContent = val;
+        bar.style.color = "#00d8fc";
+        if(step < steps) {
+          setTimeout(animate, 20);
+        } else {
+          bar.textContent = gems;
+          bar.style.color = "#2a90c6";
+        }
+      }
+      animate();
+      flyGem(amount || diff);
+    }
+    function flyGem(amount) {
+      // harcanan elmas için barın yanına animasyon
+      let n = Math.max(1, Math.min(Math.abs(amount), 10));
+      for(let i=0;i<n;i++) {
+        let gem = document.createElement('div');
+        gem.className = "gem-fly";
+        gem.innerHTML = "💎";
+        gem.style.left = (window.innerWidth/2 + 48 + Math.random()*20) + "px";
+        gem.style.top = "18px";
+        gem.style.opacity = 1;
+        gem.style.position = "fixed";
+        gem.style.transform = "scale(1)";
+        document.body.appendChild(gem);
+        let bar = document.getElementById("gem-bar");
+        let rect = bar.getBoundingClientRect();
+        setTimeout(()=>{
+          let tx = rect.left + rect.width/2 - (window.innerWidth/2+48) + (Math.random()-0.5)*8;
+          let ty = rect.top + rect.height/2 - 18 + (Math.random()-0.5)*8;
+          gem.style.transform = `translate(${tx}px, ${ty}px) scale(0.56)`;
+          gem.style.opacity = 0.15;
+        },30+80*i);
+        setTimeout(()=>{gem.remove();},1400+80*i);
+      }
+    }
 
     function updateMoneyBar() {
       document.getElementById("money-value").textContent = money.toFixed(2);
@@ -158,7 +346,7 @@
       div.className = "field";
       div.style.left = x + "px";
       div.style.top = y + "px";
-      let f = {x, y, type, dried: false, div, created: Date.now()};
+      let f = {x, y, type, dried: false, div, created: Date.now(), workerId: null, workerLock: false};
       div.onclick = (ev) => {
         ev.stopPropagation();
         onFieldClick(div, f);
@@ -183,6 +371,18 @@
         cropImg.src = IMAGES[f.type];
         cropImg.className = 'field-crop';
         fieldContent.appendChild(cropImg);
+      }
+      // Eğer işçi topluyorsa işçi animasyonu ekle
+      if (!f.dried && f.workerId) {
+        let workerIcon = document.createElement("span");
+        workerIcon.style.position = "absolute";
+        workerIcon.style.bottom = "7px";
+        workerIcon.style.left = "10px";
+        workerIcon.style.fontSize = "35px";
+        workerIcon.style.pointerEvents = "none";
+        workerIcon.textContent = f.type=="strawberry" ? "🍓👷‍♂️" : "🌾👷‍♂️";
+        workerIcon.title = "Bu tarla işçi tarafından otomatik toplanıyor";
+        fieldContent.appendChild(workerIcon);
       }
       div.appendChild(fieldContent);
       // TIMER BAR
@@ -212,6 +412,8 @@
         clearInterval(f.timer);
         f.dried = true;
         renderFieldContent(f);
+        // İşçi tarlayı topluyorsa bir sonraki tarlaya geçmeli
+        if(f.workerId) assignWorkerToNextField(f.workerId);
       } else {
         if(f.timerBarInner)f.timerBarInner.style.width = (left/60*100)+'%';
         if(f.timerBarText)f.timerBarText.textContent = left+"s";
@@ -220,10 +422,11 @@
 
     // Hasat
     function onFieldClick(div, f) {
-      if (f.dried) return;
+      // Eğer bu tarlada işçi varsa biz toplayamayalım
+      if (f.dried || f.workerId) return;
       flyProduct(div, f.type);
     }
-    function flyProduct(div, type) {
+    function flyProduct(div, type, isWorker) {
       const rect = div.getBoundingClientRect();
       const img = document.createElement('img');
       img.src = IMAGES[type];
@@ -331,8 +534,147 @@
         }
       }
     };
-    document.getElementById("empty-btn").onclick = () => {alert("Bu buton henüz bir şey yapmıyor!");};
+
+    // -------- İŞÇİ KİRALAMA MODALI VE SİSTEMİ ---------
+    let workerList = []; // [{id,type,expiresAt,tarlaId,interval,timer}]
+    let nextWorkerId = 1;
+
+    document.getElementById("empty-btn").onclick = function() {
+      openWorkerModal();
+    };
+
+    function openWorkerModal() {
+      document.getElementById("worker-modal").style.display = "block";
+      // Butonlar: parası/taşı yetmeyen için opacity
+      document.getElementById('hire-strawberry-btn').style.opacity = (gems>=3) ? '1' : '0.4';
+      document.getElementById('hire-strawberry-btn').style.pointerEvents = (gems>=3) ? 'auto' : 'none';
+      document.getElementById('hire-wheat-btn').style.opacity = (gems>=2) ? '1' : '0.4';
+      document.getElementById('hire-wheat-btn').style.pointerEvents = (gems>=2) ? 'auto' : 'none';
+    }
+    function closeWorkerModal() {
+      document.getElementById("worker-modal").style.display = "none";
+    }
+
+    function hireWorker(type) {
+      let price = type=="strawberry" ? 3 : 2;
+      if(gems < price) return;
+      gems -= price;
+      updateGemBar(true, price);
+      closeWorkerModal();
+      // 5 dakika boyunca aktif işçi objesi
+      let worker = {
+        id: nextWorkerId++,
+        type: type,
+        expiresAt: Date.now() + 5*60*1000,
+        tarlaId: null,
+        interval: null,
+        timer: null
+      };
+      workerList.push(worker);
+      assignWorkerToField(worker);
+      updateWorkerIndicators();
+    }
+
+    // Her işçi her zaman boşta uygun tarlaya atanmalı
+    function assignWorkerToField(worker) {
+      // Önce eski tarladan çıkar
+      if(worker.tarlaId) {
+        let f = fields.find(f=>f.id===worker.tarlaId);
+        if(f) { f.workerId = null; f.workerLock = false; renderFieldContent(f);}
+      }
+      // Uygun bir tarlaya işçiyi ata
+      let candidate = fields.find(f=>
+        !f.dried && f.type==worker.type && !f.workerId
+      );
+      if(candidate) {
+        candidate.workerId = worker.id;
+        candidate.workerLock = true;
+        worker.tarlaId = candidate.id = candidate.id || ("f"+Math.random()).slice(0,9);
+        renderFieldContent(candidate);
+        startWorkerOnField(worker, candidate);
+      } else {
+        worker.tarlaId = null;
+        stopWorkerHarvest(worker);
+      }
+    }
+
+    function assignWorkerToNextField(workerId) {
+      let worker = workerList.find(w=>w.id==workerId);
+      if(!worker) return;
+      assignWorkerToField(worker);
+      updateWorkerIndicators();
+    }
+
+    function startWorkerOnField(worker, field) {
+      stopWorkerHarvest(worker); // varsa önce iptal
+      // İşçi dakikada 400 item toplar: 60/400=0.15s/item
+      let intervalTime = 150; // 0.15 saniyede 1 item
+      worker.interval = setInterval(()=>{
+        if(field.dried || field.workerId!==worker.id || Date.now()>worker.expiresAt) {
+          clearInterval(worker.interval);
+          assignWorkerToNextField(worker.id);
+          return;
+        }
+        // Tarlada toplama animasyonu
+        flyProduct(field.div, field.type, true);
+        inventory[field.type]++;
+      }, intervalTime);
+
+      // İşçi süresinin bitişini takip et
+      worker.timer = setInterval(()=>{
+        if(Date.now() > worker.expiresAt) {
+          clearInterval(worker.interval);
+          clearInterval(worker.timer);
+          // Alanın kilidini aç
+          if(field.workerId===worker.id) {
+            field.workerId = null;
+            field.workerLock = false;
+            renderFieldContent(field);
+          }
+          // İşçiyi listeden çıkar
+          workerList = workerList.filter(w=>w.id!==worker.id);
+          updateWorkerIndicators();
+        }
+      }, 1000);
+    }
+
+    function stopWorkerHarvest(worker) {
+      if(worker.interval) clearInterval(worker.interval);
+      if(worker.timer) clearInterval(worker.timer);
+    }
+
+    // Sağ işçi göstergesi
+    function updateWorkerIndicators() {
+      let wrap = document.getElementById("worker-indicator-wrap");
+      wrap.innerHTML = "";
+      for(let w of workerList) {
+        let sure = Math.max(0, Math.floor((w.expiresAt-Date.now())/1000));
+        let min = Math.floor(sure/60), sec = sure%60;
+        let text = (w.type=="strawberry"?"🍓":"🌾")+"👷‍♂️";
+        let timer = `${min}:${(sec<10?"0":"")+sec}`;
+        let el = document.createElement("div");
+        el.className = "worker-indicator";
+        el.innerHTML = `${text} <span class="timer">${timer}</span>`;
+        wrap.appendChild(el);
+      }
+    }
+
+    // Her yeni tarlada/hasatta işçileri otomatik uygun alana ata
+    setInterval(()=>{
+      for(let w of workerList) {
+        if(!w.tarlaId) assignWorkerToField(w);
+      }
+      updateWorkerIndicators();
+    }, 2000);
+
+    // Tüm tarlalara unique id ata (ilk çalışmada)
+    setInterval(()=>{
+      for(let f of fields) if(!f.id) f.id = ("f"+Math.random()).slice(0,9);
+    }, 6000);
+
     updateMoneyBar();
+    updateGemBar();
+
   </script>
 </body>
 </html>
