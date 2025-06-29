@@ -10,7 +10,6 @@
     #money-bar {width: 100vw;display: flex;align-items: center;justify-content: center;position: fixed;top: 0;left: 0;z-index: 50;background: rgba(255,255,255,0.38);box-shadow: 0 2px 15px rgba(30,60,30,0.05);height: 70px;font-size: 40px;font-weight: bold;letter-spacing: 2px;padding: 7px 0 7px 0;user-select: none;}
     #money-bar .dollar-emoji {font-size: 40px;margin-right: 18px;margin-top: 2px;filter: drop-shadow(0 1px 2px #8bce96);}
     #money-value {font-size: 40px;color: #25a16b;text-shadow: 0 1px 0 #fff, 0 1px 10px #98f1b3;margin-right: 18px;font-weight: 700;min-width: 90px;display: inline-block;text-align: right;letter-spacing: 1px;}
-    /* Elmas Barı */
     #gem-bar {display: flex;align-items: center;margin-left: 8px;}
     #gem-bar .gem-emoji {font-size: 34px;margin-right: 10px;margin-top: 1px;filter: drop-shadow(0 2px 4px #70c0e0);}
     #gem-value {font-size: 32px;color: #2a90c6;text-shadow: 0 1px 0 #fff, 0 1px 10px #88d8fc;font-weight: 700;min-width: 55px;display: inline-block;text-align: right;letter-spacing: 1px;transition: color 0.32s;}
@@ -36,7 +35,6 @@
     .plant-price {font-size: 36px;color: #29b56e;font-weight: 600;background: #e4ffd6;padding: 6px 27px;border-radius: 17px;box-shadow: 0 1px 2px #cdebc9;margin-bottom: 2px;}
     #plant-modal button {margin: 23px 17px 0 17px;font-size: 25px;background: #f7e2e0;border: none;padding: 13px 40px;border-radius: 18px;cursor: pointer;transition: background 0.14s;color: #333;font-weight: 600;}
     #plant-modal button:active {background: #f3b9b2;}
-    /* Satış Modalı (90%) */
     #home-modal {
       display: none;
       position: fixed;
@@ -61,7 +59,6 @@
     .sell-price {font-size: 28px;font-weight: 700;color: #228750;background: #e3ffe6;border-radius: 13px;padding: 6px 21px;box-shadow: 0 1px 2px #d2f8c9;margin-left: 3px;}
     .sell-count {font-size: 22px;color: #5f6265;font-weight: 500;margin-right: 10px;background: #fafcff;padding: 4px 10px;border-radius: 11px;border: 1.8px solid #e1e3e3;}
     .game-btn[style] {width: 34px !important;height: 34px !important;font-size: 16px !important;}
-    /* İşçi Kiralama Modalı */
     #worker-modal {
       display: none;
       position: fixed;
@@ -92,7 +89,6 @@
     #worker-modal .worker-price {font-size: 28px;color: #2a90c6;font-weight: 600;background: #e4fcff;padding: 4px 19px;border-radius: 13px;box-shadow: 0 1px 2px #b1e8f2;}
     #worker-modal button {margin: 13px 9px 0 9px;font-size: 21px;background: #bee9fa;border: none;padding: 10px 30px;border-radius: 14px;cursor: pointer;transition: background 0.14s;color: #2a3d4a;font-weight: 600;}
     #worker-modal button:active {background: #75daff;}
-    /* Sağ işçi göstergesi */
     #worker-indicator-wrap {
       position: fixed;
       top: 110px;
@@ -128,17 +124,18 @@
       text-align: right;
       letter-spacing: 0.5px;
     }
+    .worker-indicator .maxinfo {
+      font-size: 13px;
+      color: #2a90c6;
+      margin-left: 7px;
+      opacity: 0.67;
+    }
     @media (max-width: 900px) {
       .field, .field-plot { width: 110px; height: 110px;}
       .field-crop { width: 80px; height: 80px;}
       .product-fly, .money-fly { width: 150px; height: 150px; font-size: 70px;}
       .plant-choice-img { width: 90px; height: 90px;}
-      /* Satış modal boyutları */
-      #home-modal {
-        width: 90vw;
-        max-width: 97vw;
-        min-width: unset;
-      }
+      #home-modal { width: 90vw; max-width: 97vw; min-width: unset; }
       .sell-img { width: 44px; height: 44px;}
       .sell-price { font-size: 19px;}
       .sell-count { font-size: 14px;}
@@ -163,7 +160,6 @@
     <div id="money-bar">
       <span class="dollar-emoji">💵</span>
       <span id="money-value">100</span>
-      <!-- Elmas barı ekleniyor -->
       <span id="gem-bar">
         <span class="gem-emoji">💎</span>
         <span id="gem-value">10</span>
@@ -186,14 +182,12 @@
         <button onclick="closeModal()">Vazgeç</button>
       </div>
     </div>
-    <!-- ALT BUTONLAR -->
     <div id="bottom-bar">
       <button class="game-btn" id="plant-btn" title="Ekim Yap (Kazma)">⛏️</button>
       <button class="game-btn" id="home-btn" title="Depo/Ev">🏠</button>
       <button class="game-btn" id="empty-btn" title="İşçi Kirala">🧺</button>
       <button class="game-btn" id="remove-btn" title="Tarlaları Sil">❌</button>
     </div>
-    <!-- Satış Modalı -->
     <div id="home-modal">
       <button class="close-x" onclick="closeHomeModal()">×</button>
       <div class="sell-row">
@@ -209,10 +203,9 @@
         <button class="game-btn" style="width:42px;height:42px;font-size:22px;" onclick="sellProduct('strawberry')">Sat</button>
       </div>
     </div>
-    <!-- İşçi Kiralama Modalı -->
     <div id="worker-modal">
       <button class="close-x" onclick="closeWorkerModal()">×</button>
-      <div style="font-size:22px;font-weight:600;color:#299cc3;margin-bottom:13px;">5 Dakikalık İşçi Kirala</div>
+      <div style="font-size:22px;font-weight:600;color:#299cc3;margin-bottom:13px;">3 Dakikalık İşçi Kirala</div>
       <div class="worker-opt-row">
         <div class="worker-opt-wrap">
           <div class="worker-img" id="hire-strawberry-btn" style="cursor:pointer;" onclick="hireWorker('strawberry')">🍓<span style="position:absolute;right:1px;bottom:0;font-size:27px;">👷‍♂️</span></div>
@@ -227,12 +220,10 @@
         <button onclick="closeWorkerModal()">Vazgeç</button>
       </div>
     </div>
-    <!-- Sağda İşçi Göstergesi -->
     <div id="worker-indicator-wrap"></div>
   </div>
   <script>
-    // OYUN DEĞİŞKENLERİ
-    let fields = []; // {x, y, type, dried, div, timer, created, workerId, workerLock}
+    let fields = [];
     let inventory = {wheat: 0, strawberry: 0};
     let money = 100;
     let gems = 10;
@@ -247,7 +238,7 @@
     const IMAGES = {wheat: "img/wheat.webp", strawberry: "img/strawberry.png"};
     const PLOTS = {wheat: "img/Plot3.webp", strawberry: "img/PlotS3.webp"};
 
-    // --- ELMA BAR ANİMASYONU
+    // ELMA BAR ANİMASYONU
     function updateGemBar(animated, amount) {
       const bar = document.getElementById("gem-value");
       if(!animated) {
@@ -257,18 +248,14 @@
       const old = Number(bar.textContent);
       const diff = gems - old;
       if(diff === 0) return;
-      // animasyon
-      let step = 0;
-      let steps = 18;
-      let inc = diff/steps;
+      let step = 0, steps = 18, inc = diff/steps;
       function animate() {
         step++;
         let val = old + Math.round(inc*step);
         bar.textContent = val;
         bar.style.color = "#00d8fc";
-        if(step < steps) {
-          setTimeout(animate, 20);
-        } else {
+        if(step < steps) setTimeout(animate, 20);
+        else {
           bar.textContent = gems;
           bar.style.color = "#2a90c6";
         }
@@ -277,7 +264,6 @@
       flyGem(amount || diff);
     }
     function flyGem(amount) {
-      // harcanan elmas için barın yanına animasyon
       let n = Math.max(1, Math.min(Math.abs(amount), 10));
       for(let i=0;i<n;i++) {
         let gem = document.createElement('div');
@@ -300,15 +286,11 @@
         setTimeout(()=>{gem.remove();},1400+80*i);
       }
     }
-
-    function updateMoneyBar() {
-      document.getElementById("money-value").textContent = money.toFixed(2);
-    }
+    function updateMoneyBar() { document.getElementById("money-value").textContent = money.toFixed(2); }
     document.getElementById("plant-btn").onclick = () => {
       plantMode = true;
       document.getElementById("plant-btn").style.background = "#f3d298";
     };
-
     document.getElementById("field-area").onclick = function(e) {
       if (!plantMode) return;
       if (e.target !== document.getElementById("field-area")) return;
@@ -320,7 +302,6 @@
       plantMode = false;
       document.getElementById("plant-btn").style.background = "#e9ffe1";
     };
-
     const plantModal = document.getElementById("plant-modal");
     function openModal() {
       plantModal.style.display = "block";
@@ -329,9 +310,7 @@
       document.getElementById('choose-strawberry').style.pointerEvents = money >= PRICES.strawberry ? 'auto' : 'none';
       document.getElementById('choose-wheat').style.pointerEvents = money >= PRICES.wheat ? 'auto' : 'none';
     }
-    function closeModal() {
-      plantModal.style.display = "none";
-    }
+    function closeModal() { plantModal.style.display = "none"; }
     function choosePlant(type) {
       if (money < PRICES[type]) return;
       addField(lastPlantPos.x, lastPlantPos.y, type);
@@ -340,23 +319,18 @@
       updateMoneyBar();
       closeModal();
     }
-
     function addField(x, y, type) {
       let div = document.createElement("div");
       div.className = "field";
       div.style.left = x + "px";
       div.style.top = y + "px";
       let f = {x, y, type, dried: false, div, created: Date.now(), workerId: null, workerLock: false};
-      div.onclick = (ev) => {
-        ev.stopPropagation();
-        onFieldClick(div, f);
-      };
+      div.onclick = (ev) => { ev.stopPropagation(); onFieldClick(div, f); };
       renderFieldContent(f);
       document.getElementById("field-area").appendChild(div);
       fields.push(f);
       f.timer = setInterval(()=>updateFieldTimer(f), 1000);
     }
-
     function renderFieldContent(f) {
       let div = f.div;
       div.innerHTML = "";
@@ -372,7 +346,6 @@
         cropImg.className = 'field-crop';
         fieldContent.appendChild(cropImg);
       }
-      // Eğer işçi topluyorsa işçi animasyonu ekle
       if (!f.dried && f.workerId) {
         let workerIcon = document.createElement("span");
         workerIcon.style.position = "absolute";
@@ -385,7 +358,6 @@
         fieldContent.appendChild(workerIcon);
       }
       div.appendChild(fieldContent);
-      // TIMER BAR
       if (!f.dried) {
         let wrap = document.createElement('div');
         wrap.className = "timer-bar-wrap";
@@ -403,7 +375,6 @@
         updateFieldTimer(f,true);
       }
     }
-
     function updateFieldTimer(f,init){
       if (f.dried) return;
       let elapsed = Math.floor((Date.now()-f.created)/1000);
@@ -412,17 +383,13 @@
         clearInterval(f.timer);
         f.dried = true;
         renderFieldContent(f);
-        // İşçi tarlayı topluyorsa bir sonraki tarlaya geçmeli
         if(f.workerId) assignWorkerToNextField(f.workerId);
       } else {
         if(f.timerBarInner)f.timerBarInner.style.width = (left/60*100)+'%';
         if(f.timerBarText)f.timerBarText.textContent = left+"s";
       }
     }
-
-    // Hasat
     function onFieldClick(div, f) {
-      // Eğer bu tarlada işçi varsa biz toplayamayalım
       if (f.dried || f.workerId) return;
       flyProduct(div, f.type);
     }
@@ -448,10 +415,7 @@
         updateHomeCount(type, 1);
       },2100);
     }
-    function updateHomeCount(type, amount) {
-      inventory[type] += amount;
-    }
-
+    function updateHomeCount(type, amount) { inventory[type] += amount; }
     function flyMoney(amount, fromX, fromY, toBar=true) {
       let n = Math.floor(Math.min(Math.max(Math.round(amount), 1), 20));
       for(let i=0;i<n;i++) {
@@ -485,8 +449,6 @@
         setTimeout(()=>{dollar.remove();},2100+60*i);
       }
     }
-
-    // Satış modalı
     document.getElementById("home-btn").onclick = function() {openHomeModal();};
     function openHomeModal() {
       document.getElementById("home-modal").style.display = "block";
@@ -505,7 +467,6 @@
       document.getElementById("wheat-price").textContent = "$" + sellPrices.wheat.toFixed(2);
       document.getElementById("strawberry-price").textContent = "$" + sellPrices.strawberry.toFixed(2);
     }
-
     function sellProduct(type) {
       let count = inventory[type];
       if (count <= 0) return;
@@ -519,7 +480,6 @@
       updateMoneyBar();
       document.getElementById(type+"-count").textContent = 0;
     }
-
     document.getElementById("remove-btn").onclick = function() {
       for (let i=fields.length-1; i>=0; i--) {
         let f = fields[i];
@@ -534,55 +494,44 @@
         }
       }
     };
-
     // -------- İŞÇİ KİRALAMA MODALI VE SİSTEMİ ---------
-    let workerList = []; // [{id,type,expiresAt,tarlaId,interval,timer}]
+    let workerList = [];
     let nextWorkerId = 1;
-
-    document.getElementById("empty-btn").onclick = function() {
-      openWorkerModal();
-    };
-
+    const WORKER_DURATION = 3*60*1000; // 3 dakika
+    const WORKER_MAX_HARVEST = 1200;
+    document.getElementById("empty-btn").onclick = function() { openWorkerModal(); };
     function openWorkerModal() {
       document.getElementById("worker-modal").style.display = "block";
-      // Butonlar: parası/taşı yetmeyen için opacity
       document.getElementById('hire-strawberry-btn').style.opacity = (gems>=3) ? '1' : '0.4';
       document.getElementById('hire-strawberry-btn').style.pointerEvents = (gems>=3) ? 'auto' : 'none';
       document.getElementById('hire-wheat-btn').style.opacity = (gems>=2) ? '1' : '0.4';
       document.getElementById('hire-wheat-btn').style.pointerEvents = (gems>=2) ? 'auto' : 'none';
     }
-    function closeWorkerModal() {
-      document.getElementById("worker-modal").style.display = "none";
-    }
-
+    function closeWorkerModal() { document.getElementById("worker-modal").style.display = "none"; }
     function hireWorker(type) {
       let price = type=="strawberry" ? 3 : 2;
       if(gems < price) return;
       gems -= price;
       updateGemBar(true, price);
       closeWorkerModal();
-      // 5 dakika boyunca aktif işçi objesi
       let worker = {
         id: nextWorkerId++,
         type: type,
-        expiresAt: Date.now() + 5*60*1000,
+        expiresAt: Date.now() + WORKER_DURATION,
         tarlaId: null,
         interval: null,
-        timer: null
+        timer: null,
+        harvested: 0
       };
       workerList.push(worker);
       assignWorkerToField(worker);
       updateWorkerIndicators();
     }
-
-    // Her işçi her zaman boşta uygun tarlaya atanmalı
     function assignWorkerToField(worker) {
-      // Önce eski tarladan çıkar
       if(worker.tarlaId) {
         let f = fields.find(f=>f.id===worker.tarlaId);
         if(f) { f.workerId = null; f.workerLock = false; renderFieldContent(f);}
       }
-      // Uygun bir tarlaya işçiyi ata
       let candidate = fields.find(f=>
         !f.dried && f.type==worker.type && !f.workerId
       );
@@ -597,53 +546,55 @@
         stopWorkerHarvest(worker);
       }
     }
-
     function assignWorkerToNextField(workerId) {
       let worker = workerList.find(w=>w.id==workerId);
       if(!worker) return;
       assignWorkerToField(worker);
       updateWorkerIndicators();
     }
-
     function startWorkerOnField(worker, field) {
-      stopWorkerHarvest(worker); // varsa önce iptal
-      // İşçi dakikada 400 item toplar: 60/400=0.15s/item
-      let intervalTime = 150; // 0.15 saniyede 1 item
+      stopWorkerHarvest(worker);
+      let maxTick = Math.min(WORKER_MAX_HARVEST - worker.harvested, 1e5);
+      let intervalTime = (WORKER_DURATION) / WORKER_MAX_HARVEST;
+      let countTick = 0;
       worker.interval = setInterval(()=>{
-        if(field.dried || field.workerId!==worker.id || Date.now()>worker.expiresAt) {
+        if(field.dried || field.workerId!==worker.id || Date.now()>worker.expiresAt || worker.harvested>=WORKER_MAX_HARVEST) {
           clearInterval(worker.interval);
           assignWorkerToNextField(worker.id);
           return;
         }
-        // Tarlada toplama animasyonu
         flyProduct(field.div, field.type, true);
         inventory[field.type]++;
+        worker.harvested++;
+        countTick++;
+        if(worker.harvested >= WORKER_MAX_HARVEST) {
+          clearInterval(worker.interval);
+          removeWorker(worker.id, true);
+        }
       }, intervalTime);
-
-      // İşçi süresinin bitişini takip et
       worker.timer = setInterval(()=>{
         if(Date.now() > worker.expiresAt) {
           clearInterval(worker.interval);
           clearInterval(worker.timer);
-          // Alanın kilidini aç
-          if(field.workerId===worker.id) {
-            field.workerId = null;
-            field.workerLock = false;
-            renderFieldContent(field);
-          }
-          // İşçiyi listeden çıkar
-          workerList = workerList.filter(w=>w.id!==worker.id);
-          updateWorkerIndicators();
+          removeWorker(worker.id);
         }
       }, 1000);
     }
-
     function stopWorkerHarvest(worker) {
       if(worker.interval) clearInterval(worker.interval);
       if(worker.timer) clearInterval(worker.timer);
     }
-
-    // Sağ işçi göstergesi
+    function removeWorker(id, reachedMax) {
+      let worker = workerList.find(w=>w.id==id);
+      if(!worker) return;
+      if(worker.tarlaId) {
+        let f = fields.find(f=>f.id===worker.tarlaId);
+        if(f) { f.workerId = null; f.workerLock = false; renderFieldContent(f);}
+      }
+      stopWorkerHarvest(worker);
+      workerList = workerList.filter(w=>w.id!==id);
+      updateWorkerIndicators();
+    }
     function updateWorkerIndicators() {
       let wrap = document.getElementById("worker-indicator-wrap");
       wrap.innerHTML = "";
@@ -654,27 +605,21 @@
         let timer = `${min}:${(sec<10?"0":"")+sec}`;
         let el = document.createElement("div");
         el.className = "worker-indicator";
-        el.innerHTML = `${text} <span class="timer">${timer}</span>`;
+        el.innerHTML = `${text} <span class="timer">${timer}</span><span class="maxinfo">${w.harvested}/${WORKER_MAX_HARVEST}</span>`;
         wrap.appendChild(el);
       }
     }
-
-    // Her yeni tarlada/hasatta işçileri otomatik uygun alana ata
     setInterval(()=>{
       for(let w of workerList) {
         if(!w.tarlaId) assignWorkerToField(w);
       }
       updateWorkerIndicators();
     }, 2000);
-
-    // Tüm tarlalara unique id ata (ilk çalışmada)
     setInterval(()=>{
       for(let f of fields) if(!f.id) f.id = ("f"+Math.random()).slice(0,9);
     }, 6000);
-
     updateMoneyBar();
     updateGemBar();
-
   </script>
 </body>
 </html>
