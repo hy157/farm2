@@ -23,6 +23,41 @@
       justify-content: space-between;
       align-items: center;
     }
+    #money-bar {
+      width: 100vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 50;
+      background: rgba(255,255,255,0.38);
+      box-shadow: 0 2px 15px rgba(30,60,30,0.05);
+      height: 56px;
+      font-size: 30px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      padding: 7px 0 7px 0;
+      user-select: none;
+    }
+    #money-bar .dollar-emoji {
+      font-size: 32px;
+      margin-right: 13px;
+      margin-top: 2px;
+      filter: drop-shadow(0 1px 2px #8bce96);
+    }
+    #money-value {
+      font-size: 31px;
+      color: #25a16b;
+      text-shadow: 0 1px 0 #fff, 0 1px 10px #98f1b3;
+      margin-right: 6px;
+      font-weight: 700;
+      min-width: 70px;
+      display: inline-block;
+      text-align: right;
+      letter-spacing: 1px;
+    }
     #field-area {
       flex: 1 1 auto;
       width: 100vw;
@@ -70,14 +105,21 @@
       filter: drop-shadow(0 6px 18px rgba(0,0,0,0.12));
       position: relative;
     }
-    .product-fly {
+    .product-fly, .money-fly {
       position: absolute;
       width: 216px;
       height: 216px;
       pointer-events: none;
-      z-index: 20;
+      z-index: 1001;
       transition: transform 2.1s cubic-bezier(.17,.67,.54,1.26), opacity 2.1s;
       will-change: transform, opacity;
+      font-size: 100px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #25a16b;
+      filter: drop-shadow(0 0 14px #d0ffd4);
     }
     #bottom-bar {
       width: 100vw;
@@ -142,13 +184,18 @@
       padding: 36px 26px 20px 26px;
       z-index: 100;
       text-align: center;
-      min-width: 260px;
+      min-width: 270px;
     }
     .plant-choice-row {
       display: flex;
       justify-content: center;
       gap: 44px;
       margin: 0 0 5px 0;
+    }
+    .plant-choice-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .plant-choice-img {
       width: 105px; height: 105px;
@@ -158,11 +205,22 @@
       box-shadow: 0 3px 14px rgba(80,120,50,0.11);
       transition: border 0.13s, transform 0.13s, box-shadow 0.13s;
       background: #f6fff2;
+      margin-bottom: 4px;
     }
     .plant-choice-img:active {
       border: 4px solid #bbffba;
       transform: scale(0.97);
       box-shadow: 0 1px 8px #befbc7;
+    }
+    .plant-price {
+      font-size: 20px;
+      color: #29b56e;
+      font-weight: 600;
+      background: #e4ffd6;
+      padding: 2px 13px;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px #cdebc9;
+      margin-bottom: 2px;
     }
     #plant-modal button {
       margin: 18px 12px 0 12px;
@@ -179,31 +237,115 @@
     #plant-modal button:active {
       background: #f3b9b2;
     }
+    /* Ev Modal */
+    #home-modal {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -54%);
+      background: #fdfff6;
+      border-radius: 24px;
+      box-shadow: 0 4px 28px rgba(80,130,30,0.13);
+      padding: 32px 21px 21px 21px;
+      z-index: 3000;
+      min-width: 264px;
+      text-align: center;
+      user-select: none;
+    }
+    .close-x {
+      position: absolute;
+      top: 11px; right: 16px;
+      font-size: 32px;
+      font-weight: 600;
+      color: #d1735a;
+      cursor: pointer;
+      background: none;
+      border: none;
+      z-index: 1;
+      transition: color 0.14s, transform 0.13s;
+    }
+    .close-x:active {
+      color: #ff3c1e;
+      transform: scale(1.08) rotate(9deg);
+    }
+    .sell-row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 21px;
+      margin: 22px 0 12px 0;
+      justify-content: center;
+    }
+    .sell-img {
+      width: 63px; height: 63px;
+      border-radius: 14px;
+      background: #f8fff2;
+      box-shadow: 0 1px 8px #d5ffe5;
+      border: 2px solid #e0fae8;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .sell-price {
+      font-size: 23px;
+      font-weight: 700;
+      color: #228750;
+      background: #e3ffe6;
+      border-radius: 9px;
+      padding: 4px 15px;
+      box-shadow: 0 1px 2px #d2f8c9;
+      margin-left: 3px;
+    }
+    .sell-count {
+      font-size: 19px;
+      color: #5f6265;
+      font-weight: 500;
+      margin-right: 7px;
+      background: #fafcff;
+      padding: 2px 6px;
+      border-radius: 7px;
+      border: 1.3px solid #e1e3e3;
+    }
     @media (max-width: 700px) {
       .field, .field-plot { width: 120px; height: 120px;}
       .field-crop { width: 90px; height: 90px;}
-      .product-fly { width: 162px; height: 162px;}
+      .product-fly, .money-fly { width: 162px; height: 162px; font-size: 72px;}
       .plant-choice-img { width: 74px; height: 74px;}
+      .sell-img { width: 44px; height: 44px;}
     }
     @media (max-width: 420px) {
       .field, .field-plot { width: 90px; height: 90px;}
       .field-crop { width: 60px; height: 60px;}
-      .product-fly { width: 121px; height: 121px;}
+      .product-fly, .money-fly { width: 121px; height: 121px; font-size: 49px;}
       .plant-choice-img { width: 54px; height: 54px;}
+      .sell-img { width: 31px; height: 31px;}
       #bottom-bar { max-width: 99vw;}
-      #plant-modal { min-width: 150px; padding: 16px 4px 9px 4px;}
+      #plant-modal { min-width: 140px; padding: 10px 3px 7px 3px;}
+      #home-modal { min-width: 110px; padding: 10px 2px 6px 2px;}
+      #money-bar { font-size: 18px;}
+      #money-bar .dollar-emoji { font-size: 19px;}
     }
   </style>
 </head>
 <body>
   <div id="game">
+    <!-- Para Barı -->
+    <div id="money-bar">
+      <span class="dollar-emoji">💵</span>
+      <span id="money-value">100</span>
+    </div>
     <div id="field-area"></div>
 
-    <!-- MODAL: Bitki seç (sadece ikonlar) -->
+    <!-- Tarla Ekim Modalı -->
     <div id="plant-modal">
       <div class="plant-choice-row">
-        <img src="img/strawberry.png" class="plant-choice-img" onclick="choosePlant('strawberry')">
-        <img src="img/wheat.webp" class="plant-choice-img" onclick="choosePlant('wheat')">
+        <div class="plant-choice-wrap">
+          <img src="img/strawberry.png" class="plant-choice-img" onclick="choosePlant('strawberry')" id="choose-strawberry">
+          <span class="plant-price">💵 60</span>
+        </div>
+        <div class="plant-choice-wrap">
+          <img src="img/wheat.webp" class="plant-choice-img" onclick="choosePlant('wheat')" id="choose-wheat">
+          <span class="plant-price">💵 40</span>
+        </div>
       </div>
       <div>
         <button onclick="closeModal()">Vazgeç</button>
@@ -220,15 +362,37 @@
       <button class="game-btn" id="empty-btn" title="Buton 3">🧺</button>
       <button class="game-btn" id="settings-btn" title="Ayarlar">⚙️</button>
     </div>
+
+    <!-- Satış Modalı -->
+    <div id="home-modal">
+      <button class="close-x" onclick="closeHomeModal()">×</button>
+      <div class="sell-row">
+        <span class="sell-count" id="wheat-count">0</span>
+        <span class="sell-img"><img src="img/wheat.webp" style="width:100%;height:100%"></span>
+        <span class="sell-price" id="wheat-price">$0</span>
+        <button class="game-btn" style="width:40px;height:40px;font-size:22px;" onclick="sellProduct('wheat')">Sat</button>
+      </div>
+      <div class="sell-row">
+        <span class="sell-count" id="strawberry-count">0</span>
+        <span class="sell-img"><img src="img/strawberry.png" style="width:100%;height:100%"></span>
+        <span class="sell-price" id="strawberry-price">$0</span>
+        <button class="game-btn" style="width:40px;height:40px;font-size:22px;" onclick="sellProduct('strawberry')">Sat</button>
+      </div>
+    </div>
   </div>
 
   <script>
-    // Tarlalar (pozisyon ve tip)
+    // Oyun Değişkenleri
     let fields = []; // {x, y, type}
+    let inventory = {wheat: 0, strawberry: 0};
     let homeCount = 0;
+    let money = 100;
     let plantMode = false;
     let lastPlantPos = {x:0, y:0};
     let fieldArea = document.getElementById("field-area");
+    const PRICES = {wheat: 40, strawberry: 60};
+    const SELL_MINMAX = {wheat: [1,3], strawberry: [2,6]};
+    let sellPrices = {wheat: 0, strawberry: 0};
 
     // Görseller
     const IMAGES = {
@@ -240,13 +404,18 @@
       strawberry: "img/PlotS3.webp"
     };
 
-    // Tarla ekme modunu aç
+    // PARA BARINI GÜNCELLE
+    function updateMoneyBar() {
+      document.getElementById("money-value").textContent = money;
+    }
+
+    // TARLA EKME MODUNU AÇ
     document.getElementById("plant-btn").onclick = () => {
       plantMode = true;
       document.getElementById("plant-btn").style.background = "#f3d298";
     };
 
-    // Oyun alanına tıklayınca (sadece ekim modunda)
+    // OYUN ALANINA TIKLANINCA TARLA EKLE
     fieldArea.onclick = function(e) {
       if (!plantMode) return;
       if (e.target !== fieldArea) return;
@@ -259,20 +428,29 @@
       document.getElementById("plant-btn").style.background = "#e9ffe1";
     };
 
-    // Modal aç/kapat
+    // TARLA EKME MODALI
     const plantModal = document.getElementById("plant-modal");
     function openModal() {
       plantModal.style.display = "block";
+      // Ekimde paran yetmiyorsa butonu disabled yap
+      document.getElementById('choose-strawberry').style.opacity = money >= PRICES.strawberry ? '1' : '0.3';
+      document.getElementById('choose-wheat').style.opacity = money >= PRICES.wheat ? '1' : '0.3';
+      document.getElementById('choose-strawberry').style.pointerEvents = money >= PRICES.strawberry ? 'auto' : 'none';
+      document.getElementById('choose-wheat').style.pointerEvents = money >= PRICES.wheat ? 'auto' : 'none';
     }
     function closeModal() {
       plantModal.style.display = "none";
     }
     function choosePlant(type) {
+      if (money < PRICES[type]) return;
       addField(lastPlantPos.x, lastPlantPos.y, type);
+      flyMoney(PRICES[type], lastPlantPos.x + 80, lastPlantPos.y + 80, false); // Ekerken para azalıyor, para barına uçsun
+      money -= PRICES[type];
+      updateMoneyBar();
       closeModal();
     }
 
-    // Tarla oluştur
+    // TARLA EKLE
     function addField(x, y, type) {
       let field = {x, y, type};
       fields.push(field);
@@ -288,7 +466,7 @@
       fieldArea.appendChild(div);
     }
 
-    // Tarlayı ekili olarak çiz
+    // TARLAYI ÇİZ
     function renderFieldContent(div, type) {
       div.innerHTML = "";
       const fieldContent = document.createElement('div');
@@ -306,14 +484,12 @@
       div.appendChild(fieldContent);
     }
 
-    // Tarlaya tıklayınca ürün toplama (her dokunuşta 2 ürün)
+    // TARLADAN ÜRÜN TOPLA
     function onFieldClick(div, field) {
       for (let k=0;k<2;k++) {
         setTimeout(()=>flyProduct(div, field.type), k*200);
       }
     }
-
-    // Ürün uçma animasyonu (2 kat büyük ve daha uzun)
     function flyProduct(div, type) {
       const rect = div.getBoundingClientRect();
       const img = document.createElement('img');
@@ -326,7 +502,6 @@
       img.style.transform = "scale(1)";
       document.body.appendChild(img);
 
-      // Hedef: ev butonunun konumu
       const homeBtn = document.getElementById("home-btn");
       const hrect = homeBtn.getBoundingClientRect();
       setTimeout(()=>{
@@ -335,13 +510,77 @@
       },30);
       setTimeout(()=>{
         img.remove();
-        updateHomeCount(1);
-      },2100); // 2.1s
+        updateHomeCount(type, 1);
+      },2100);
     }
-
-    function updateHomeCount(amount) {
+    function updateHomeCount(type, amount) {
+      inventory[type] += amount;
       homeCount += amount;
       document.getElementById("home-count").textContent = homeCount;
+    }
+
+    // PARA UÇUŞ ANİMASYONU (nereye artıyorsa/azalıyorsa)
+    function flyMoney(amount, fromX, fromY, toBar=true) {
+      const dollar = document.createElement('div');
+      dollar.className = "money-fly";
+      dollar.innerHTML = "💵";
+      dollar.style.left = (fromX - 108) + "px";
+      dollar.style.top = (fromY - 108) + "px";
+      dollar.style.opacity = 1;
+      dollar.style.position = "fixed";
+      dollar.style.transform = "scale(1)";
+      document.body.appendChild(dollar);
+
+      const moneyBar = document.getElementById("money-bar");
+      const rectBar = moneyBar.getBoundingClientRect();
+      setTimeout(()=>{
+        let tx = rectBar.left + rectBar.width/2 - fromX + 10;
+        let ty = rectBar.top + rectBar.height/2 - fromY + 0;
+        dollar.style.transform = `translate(${tx}px, ${ty}px) scale(0.6)`;
+        dollar.style.opacity = 0.15;
+      },30);
+      setTimeout(()=>{
+        dollar.remove();
+      },2100);
+    }
+
+    // EV BUTONUNA BASINCA SATIŞ PENCERESİ AÇ
+    document.getElementById("home-btn").onclick = function() {
+      openHomeModal();
+    };
+    function openHomeModal() {
+      document.getElementById("home-modal").style.display = "block";
+      // Fiyatlar
+      sellPrices.wheat = Math.floor(Math.random() * (SELL_MINMAX.wheat[1] - SELL_MINMAX.wheat[0] + 1)) + SELL_MINMAX.wheat[0];
+      sellPrices.strawberry = Math.floor(Math.random() * (SELL_MINMAX.strawberry[1] - SELL_MINMAX.strawberry[0] + 1)) + SELL_MINMAX.strawberry[0];
+      document.getElementById("wheat-price").textContent = "$" + sellPrices.wheat;
+      document.getElementById("strawberry-price").textContent = "$" + sellPrices.strawberry;
+      document.getElementById("wheat-count").textContent = inventory.wheat;
+      document.getElementById("strawberry-count").textContent = inventory.strawberry;
+    }
+    function closeHomeModal() {
+      document.getElementById("home-modal").style.display = "none";
+    }
+    // SATIŞ YAP
+    function sellProduct(type) {
+      let count = inventory[type];
+      if (count <= 0) return;
+      let price = sellPrices[type];
+      let total = count * price;
+      // Satılan ikonun konumunu bul
+      let iconEl = document.querySelector(".sell-img img[src*='"+type+"']");
+      let iconRect = iconEl.getBoundingClientRect();
+      // Para barına para uçur
+      flyMoney(total, iconRect.left + iconRect.width/2, iconRect.top + iconRect.height/2, true);
+      // Satışı uygula
+      money += total;
+      inventory[type] = 0;
+      homeCount -= count;
+      if (homeCount < 0) homeCount = 0;
+      document.getElementById("home-count").textContent = homeCount;
+      updateMoneyBar();
+      // Sayacı anında güncelle
+      document.getElementById(type+"-count").textContent = 0;
     }
 
     // Diğer butonlar dummy
@@ -351,6 +590,10 @@
     document.getElementById("settings-btn").onclick = () => {
       alert("Ayarlar burada olacak!");
     };
+
+    // İlk yüklemede para barını güncelle
+    updateMoneyBar();
+
   </script>
 </body>
 </html>
