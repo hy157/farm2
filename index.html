@@ -9,7 +9,7 @@
       height: 100%;
       margin: 0;
       padding: 0;
-      background: #3c8d3f; /* Yumuşak yeşil arka plan */
+      background: #3c8d3f;
       font-family: 'Segoe UI', sans-serif;
       overflow: hidden;
       touch-action: manipulation;
@@ -25,33 +25,26 @@
     }
     #field-area {
       flex: 1 1 auto;
-      display: grid;
-      grid-template-columns: repeat(3, 80px);
-      grid-template-rows: repeat(2, 80px);
-      gap: 32px;
-      margin-top: 32px;
-      position: relative;
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      top: 0; left: 0;
       z-index: 1;
-      /* izometrik efekt için */
-      transform: skewY(-12deg) scale(1.07, 0.93);
+      /* izometrik etki için gerekirse buraya eklenebilir */
     }
     .field {
       width: 80px;
       height: 80px;
-      background: rgba(0,0,0,0.06);
-      border-radius: 20px;
-      box-shadow: 0 3px 10px 0 rgba(30,60,30,0.13);
-      position: relative;
-      overflow: visible;
+      position: absolute;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.15s;
+      background: rgba(0,0,0,0.02);
+      border-radius: 20px;
+      box-shadow: 0 3px 10px 0 rgba(30,60,30,0.11);
       cursor: pointer;
-    }
-    .field.selected {
-      background: #69a942;
-      border: 2.5px solid #fff388;
+      transition: box-shadow 0.13s;
+      z-index: 2;
     }
     .field-content {
       position: absolute;
@@ -77,11 +70,13 @@
     }
     .product-fly {
       position: absolute;
-      width: 36px;
-      height: 36px;
+      width: 108px;
+      height: 108px;
       pointer-events: none;
       z-index: 20;
-      transition: transform 0.7s cubic-bezier(.17,.67,.54,1.26), opacity 0.7s;
+      transition: transform 2.1s cubic-bezier(.17,.67,.54,1.26), opacity 2.1s;
+      /* 0.7s * 3 = 2.1s */
+      will-change: transform, opacity;
     }
     #bottom-bar {
       width: 100vw;
@@ -146,24 +141,41 @@
       text-align: center;
       min-width: 240px;
     }
-    #plant-modal button {
-      margin: 16px 12px 0 12px;
-      font-size: 18px;
-      background: #d8f6d7;
-      border: none;
-      padding: 9px 22px;
+    .plant-choice-row {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 0 0 5px 0;
+    }
+    .plant-choice-img {
+      width: 70px; height: 70px;
+      cursor: pointer;
       border-radius: 14px;
+      border: 3px solid #eee;
+      box-shadow: 0 1px 7px rgba(30,60,20,0.08);
+      transition: border 0.15s, transform 0.15s;
+    }
+    .plant-choice-img:active {
+      border: 3px solid #bff8ab;
+      transform: scale(0.94);
+    }
+    #plant-modal button {
+      margin: 14px 10px 0 10px;
+      font-size: 17px;
+      background: #f7e2e0;
+      border: none;
+      padding: 7px 16px;
+      border-radius: 12px;
       cursor: pointer;
       transition: background 0.14s;
+      color: #333;
     }
     #plant-modal button:active {
-      background: #c1eeae;
+      background: #f3b9b2;
     }
     @media (max-width: 500px) {
       #field-area {
-        grid-template-columns: repeat(2, 78px);
-        grid-template-rows: repeat(3, 78px);
-        gap: 18px;
+        /* mobilde daha rahat hareket için boş bırak */
       }
     }
   </style>
@@ -172,13 +184,14 @@
   <div id="game">
     <div id="field-area"></div>
 
-    <!-- MODAL: Bitki seç -->
+    <!-- MODAL: Bitki seç (sadece ikonlar) -->
     <div id="plant-modal">
-      <div style="font-size:22px;margin-bottom:10px;">Ne ekmek istersin?</div>
-      <button onclick="choosePlant('strawberry')">🍓 Çilek</button>
-      <button onclick="choosePlant('wheat')">🌾 Buğday</button>
-      <div style="margin-top:15px;">
-        <button onclick="closeModal()" style="font-size:15px;padding:4px 16px;background:#f5dad7;">Vazgeç</button>
+      <div class="plant-choice-row">
+        <img src="img/strawberry.png" class="plant-choice-img" onclick="choosePlant('strawberry')">
+        <img src="img/wheat.webp" class="plant-choice-img" onclick="choosePlant('wheat')">
+      </div>
+      <div>
+        <button onclick="closeModal()">Vazgeç</button>
       </div>
     </div>
 
@@ -195,24 +208,13 @@
   </div>
 
   <script>
-    // Tarlalar (dizilim)
-    const fieldRows = 2, fieldCols = 3;
-    let selectedField = null;
-    let plantMode = false;
+    // Tarlalar (pozisyon ve tip)
+    let fields = []; // {x, y, type}
     let homeCount = 0;
-    let plantingFieldIndex = null; // hangi tarlaya ekim yapılacak
-    let fields = []; // [{type: null/'strawberry'/'wheat'}, ...]
-
-    // Tarlaları oluştur
-    const fieldArea = document.getElementById("field-area");
-    for (let i = 0; i < fieldRows * fieldCols; i++) {
-      const div = document.createElement("div");
-      div.className = "field";
-      div.dataset.index = i;
-      div.onclick = (e) => onFieldClick(i, div);
-      fieldArea.appendChild(div);
-      fields.push({type: null});
-    }
+    let plantMode = false;
+    let lastPlantPos = {x:0, y:0};
+    let tempFieldIndex = null; // Modal için
+    let fieldArea = document.getElementById("field-area");
 
     // Görseller
     const IMAGES = {
@@ -224,90 +226,100 @@
       strawberry: "img/PlotS3.webp"
     };
 
-    // Modal aç/kapat
-    const plantModal = document.getElementById("plant-modal");
-    function openModal(idx) {
-      plantModal.style.display = "block";
-      plantingFieldIndex = idx;
-    }
-    function closeModal() {
-      plantModal.style.display = "none";
-      plantingFieldIndex = null;
-    }
-    function choosePlant(type) {
-      if (plantingFieldIndex !== null) {
-        plantField(plantingFieldIndex, type);
-        closeModal();
-      }
-    }
-
-    // Kazma butonu: ekim için mod
+    // Tarla ekme modunu aç
     document.getElementById("plant-btn").onclick = () => {
       plantMode = true;
       document.getElementById("plant-btn").style.background = "#e8b888";
     };
 
-    // Tarlaya tıklayınca
-    function onFieldClick(idx, div) {
-      // Eğer ekiliyse: ürün toplama!
-      if (fields[idx].type) {
-        spawnProduct(idx, fields[idx].type);
-        return;
-      }
-      // Ekili değilse ve ekim modundaysa
-      if (plantMode) {
-        openModal(idx);
-        plantMode = false;
-        document.getElementById("plant-btn").style.background = "#e6ffd6";
-      }
+    // Oyun alanına tıklayınca (sadece ekim modunda)
+    fieldArea.onclick = function(e) {
+      if (!plantMode) return;
+      // Sadece alt bar ve modal dışında bir yere tıklamayı kabul et
+      if (e.target !== fieldArea) return;
+      // Koordinatları al
+      const rect = fieldArea.getBoundingClientRect();
+      let x = e.clientX - rect.left - 40; // tarla ortasına göre hizala
+      let y = e.clientY - rect.top - 40;
+      lastPlantPos = {x, y};
+      openModal();
+      plantMode = false;
+      document.getElementById("plant-btn").style.background = "#e6ffd6";
+    };
+
+    // Modal aç/kapat
+    const plantModal = document.getElementById("plant-modal");
+    function openModal() {
+      plantModal.style.display = "block";
+    }
+    function closeModal() {
+      plantModal.style.display = "none";
+    }
+    function choosePlant(type) {
+      addField(lastPlantPos.x, lastPlantPos.y, type);
+      closeModal();
     }
 
-    // Tarlaya ekim yap
-    function plantField(idx, type) {
-      fields[idx].type = type;
-      const div = fieldArea.children[idx];
-      // Alanı temizle
+    // Tarla oluştur
+    function addField(x, y, type) {
+      let field = {x, y, type};
+      fields.push(field);
+      let div = document.createElement("div");
+      div.className = "field";
+      div.style.left = x + "px";
+      div.style.top = y + "px";
+      div.onclick = (ev) => {
+        ev.stopPropagation();
+        onFieldClick(div, field);
+      };
+      // İçerik ekle
+      renderFieldContent(div, type);
+      fieldArea.appendChild(div);
+    }
+
+    // Tarlayı ekili olarak çiz
+    function renderFieldContent(div, type) {
       div.innerHTML = "";
-      // Plot resmi (arka plan) + ürün (üstte)
       const fieldContent = document.createElement('div');
       fieldContent.className = 'field-content';
-      // Plot ekle
+      // Zemin (plot)
       const plotImg = document.createElement('img');
       plotImg.src = PLOTS[type];
       plotImg.className = 'field-plot';
       fieldContent.appendChild(plotImg);
-      // Ürün ekle
+      // Ürün
       const cropImg = document.createElement('img');
       cropImg.src = IMAGES[type];
       cropImg.className = 'field-crop';
       fieldContent.appendChild(cropImg);
       div.appendChild(fieldContent);
-      div.classList.remove('selected');
     }
 
-    // Ürün toplayınca
-    function spawnProduct(idx, type) {
-      // Ürün animasyonu
+    // Tarlaya tıklayınca ürün toplama (her dokunuşta 2 ürün)
+    function onFieldClick(div, field) {
+      // 2 kez animasyon
       for (let k=0;k<2;k++) {
-        setTimeout(()=>flyProduct(idx, type), k*100);
+        setTimeout(()=>flyProduct(div, field.type), k*200);
       }
     }
+
     // Ürün uçma animasyonu
-    function flyProduct(idx, type) {
-      const div = fieldArea.children[idx];
-      // Alan üstü
+    function flyProduct(div, type) {
       const rect = div.getBoundingClientRect();
       const img = document.createElement('img');
       img.src = IMAGES[type];
       img.className = "product-fly";
-      img.style.left = (rect.left + rect.width/2 - 18) + "px";
-      img.style.top = (rect.top + rect.height/2 - 18) + "px";
+      img.style.left = (rect.left + rect.width/2 - 54) + "px";
+      img.style.top = (rect.top + rect.height/2 - 54) + "px";
       img.style.opacity = 1;
       img.style.position = "fixed";
+      img.style.transform = "scale(1)";
       document.body.appendChild(img);
-      // Uçuş: ev butonuna
+
+      // Hedef: ev butonunun konumu
       const homeBtn = document.getElementById("home-btn");
       const hrect = homeBtn.getBoundingClientRect();
+      // Uçuş animasyonu
       setTimeout(()=>{
         img.style.transform = `translate(${hrect.left-rect.left+16}px, ${hrect.top-rect.top+6}px) scale(0.45)`;
         img.style.opacity = 0.2;
@@ -315,15 +327,15 @@
       setTimeout(()=>{
         img.remove();
         updateHomeCount(1);
-      },750);
+      },2100); // 2.1s
     }
+
     function updateHomeCount(amount) {
       homeCount += amount;
       document.getElementById("home-count").textContent = homeCount;
-      // Ses efekti oynatılabilir
     }
 
-    // Boş butonlar dummy
+    // Diğer butonlar dummy
     document.getElementById("empty-btn").onclick = () => {
       alert("Bu buton henüz bir şey yapmıyor!");
     };
