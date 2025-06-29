@@ -70,7 +70,7 @@
         <span id="home-count">0</span>
       </button>
       <button class="game-btn" id="empty-btn" title="Buton 3">🧺</button>
-      <button class="game-btn" id="settings-btn" title="Ayarlar">⚙️</button>
+      <button class="game-btn" id="remove-btn" title="Tarlaları Sil">❌</button>
     </div>
     <!-- Satış Modalı -->
     <div id="home-modal">
@@ -90,7 +90,7 @@
     </div>
   </div>
   <script>
-    let fields = [];
+    let fields = []; // {x,y,type, div, timer, dried}
     let inventory = {wheat: 0, strawberry: 0};
     let homeCount = 0;
     let money = 100;
@@ -98,35 +98,43 @@
     let lastPlantPos = {x:0, y:0};
     let fieldArea = document.getElementById("field-area");
     const PRICES = {wheat: 40, strawberry: 60};
-    // SATIŞ FİYAT ARALIKLARI
     const SELL_MINMAX = {wheat: [1.00,3.00], strawberry: [2.00,4.00]};
     let sellPrices = {wheat: 0, strawberry: 0};
     let priceInterval = null;
-
-    const IMAGES = {
-      wheat: "img/wheat.webp",
-      strawberry: "img/strawberry.png"
-    };
-    const PLOTS = {
-      wheat: "img/Plot3.webp",
-      strawberry: "img/PlotS3.webp"
-    };
+    const FIELD_SIZE = 160;
+    const DRY_IMG = "img/Plot.webp";
+    const IMAGES = {wheat: "img/wheat.webp", strawberry: "img/strawberry.png"};
+    const PLOTS = {wheat: "img/Plot3.webp", strawberry: "img/PlotS3.webp"};
 
     function updateMoneyBar() {
       document.getElementById("money-value").textContent = money.toFixed(2);
     }
-
     document.getElementById("plant-btn").onclick = () => {
       plantMode = true;
       document.getElementById("plant-btn").style.background = "#f3d298";
     };
 
+    // ÇAKIŞMA KONTROLÜ
+    function isOverlap(x, y) {
+      for (let f of fields) {
+        if (!f) continue;
+        let fx = f.x, fy = f.y;
+        if (Math.abs(x-fx) < FIELD_SIZE-6 && Math.abs(y-fy) < FIELD_SIZE-6) return true;
+      }
+      return false;
+    }
+
     fieldArea.onclick = function(e) {
       if (!plantMode) return;
       if (e.target !== fieldArea) return;
       const rect = fieldArea.getBoundingClientRect();
-      let x = e.clientX - rect.left - 80;
-      let y = e.clientY - rect.top - 80;
+      let x = e.clientX - rect.left - FIELD_SIZE/2;
+      let y = e.clientY - rect.top - FIELD_SIZE/2;
+      if (isOverlap(x, y)) {
+        plantMode = false;
+        document.getElementById("plant-btn").style.background = "#e9ffe1";
+        return;
+      }
       lastPlantPos = {x, y};
       openModal();
       plantMode = false;
@@ -147,16 +155,17 @@
     function choosePlant(type) {
       if (money < PRICES[type]) return;
       addField(lastPlantPos.x, lastPlantPos.y, type);
-      flyMoney(PRICES[type], lastPlantPos.x + 80, lastPlantPos.y + 80, false);
+      flyMoney(PRICES[type], lastPlantPos.x + FIELD_SIZE/2, lastPlantPos.y + FIELD_SIZE/2, false);
       money -= PRICES[type];
       updateMoneyBar();
       closeModal();
     }
 
+    // Tarla ekle (ve 1 dakika sayaç)
     function addField(x, y, type) {
-      let field = {x, y, type};
-      fields.push(field);
+      let field = {x, y, type, dried: false};
       let div = document.createElement("div");
+      field.div = div;
       div.className = "field";
       div.style.left = x + "px";
       div.style.top = y + "px";
@@ -164,24 +173,38 @@
         ev.stopPropagation();
         onFieldClick(div, field);
       };
-      renderFieldContent(div, type);
+      renderFieldContent(div, type, false);
       fieldArea.appendChild(div);
+      fields.push(field);
+
+      // 1 dakika sonra kurut!
+      field.timer = setTimeout(()=>{
+        field.dried = true;
+        renderFieldContent(div, type, true);
+      }, 60000);
     }
-    function renderFieldContent(div, type) {
+    // Kuruma ve ekili/ekilmemiş görseliyle çiz
+    function renderFieldContent(div, type, dried) {
       div.innerHTML = "";
       const fieldContent = document.createElement('div');
       fieldContent.className = 'field-content';
       const plotImg = document.createElement('img');
-      plotImg.src = PLOTS[type];
+      plotImg.src = dried ? DRY_IMG : PLOTS[type];
       plotImg.className = 'field-plot';
       fieldContent.appendChild(plotImg);
-      const cropImg = document.createElement('img');
-      cropImg.src = IMAGES[type];
-      cropImg.className = 'field-crop';
-      fieldContent.appendChild(cropImg);
+      // Eğer kurumuşsa ürün yok!
+      if (!dried) {
+        const cropImg = document.createElement('img');
+        cropImg.src = IMAGES[type];
+        cropImg.className = 'field-crop';
+        fieldContent.appendChild(cropImg);
+      }
       div.appendChild(fieldContent);
     }
+
+    // Hasat
     function onFieldClick(div, field) {
+      if (field.dried) return;
       for (let k=0;k<2;k++) {
         setTimeout(()=>flyProduct(div, field.type), k*200);
       }
@@ -214,8 +237,8 @@
       document.getElementById("home-count").textContent = homeCount;
     }
 
+    // Para animasyonu (birden çok emoji, max 20)
     function flyMoney(amount, fromX, fromY, toBar=true) {
-      // Kaç para animasyonu?
       let n = Math.floor(Math.min(Math.max(Math.round(amount), 1), 20));
       for(let i=0;i<n;i++) {
         let dollar = document.createElement('div');
@@ -226,7 +249,6 @@
         dollar.style.opacity = 1;
         dollar.style.position = "fixed";
         dollar.style.transform = "scale(1)";
-        // Eğer 10'dan fazlaysa sadece ilk emojiye toplam miktarı yazalım
         if (n>1 && i===0) {
           let txt = document.createElement('span');
           txt.textContent = " +" + amount.toFixed(2);
@@ -252,11 +274,11 @@
       }
     }
 
-    // SATIŞ MODALI
+    // Satış modalı
     document.getElementById("home-btn").onclick = function() {openHomeModal();};
     function openHomeModal() {
       document.getElementById("home-modal").style.display = "block";
-      updateSellPrices(); // ilk açılışta hemen güncelle
+      updateSellPrices();
       document.getElementById("wheat-count").textContent = inventory.wheat;
       document.getElementById("strawberry-count").textContent = inventory.strawberry;
       priceInterval = setInterval(updateSellPrices, 1000);
@@ -266,22 +288,18 @@
       if (priceInterval) { clearInterval(priceInterval); priceInterval = null; }
     }
     function updateSellPrices() {
-      // Ondalıklı random üret
       sellPrices.wheat = (Math.random()*(SELL_MINMAX.wheat[1]-SELL_MINMAX.wheat[0]) + SELL_MINMAX.wheat[0]);
       sellPrices.strawberry = (Math.random()*(SELL_MINMAX.strawberry[1]-SELL_MINMAX.strawberry[0]) + SELL_MINMAX.strawberry[0]);
       document.getElementById("wheat-price").textContent = "$" + sellPrices.wheat.toFixed(2);
       document.getElementById("strawberry-price").textContent = "$" + sellPrices.strawberry.toFixed(2);
     }
-
     function sellProduct(type) {
       let count = inventory[type];
       if (count <= 0) return;
       let price = sellPrices[type];
       let total = count * price;
-      // Satılan ikonun konumunu bul
       let iconEl = document.querySelector(".sell-img img[src*='"+type+"']");
       let iconRect = iconEl.getBoundingClientRect();
-      // Para barına para uçur
       flyMoney(total, iconRect.left + iconRect.width/2, iconRect.top + iconRect.height/2, true);
       money += total;
       inventory[type] = 0;
@@ -292,14 +310,33 @@
       document.getElementById(type+"-count").textContent = 0;
     }
 
+    // ❌ Tarlaları Sil (sadece kurumuş/hasadı yapılmış tarlalar silinir)
+    document.getElementById("remove-btn").onclick = function() {
+      let removedCount = 0;
+      for (let i=fields.length-1; i>=0; i--) {
+        let f = fields[i];
+        // Sadece kurumuş ya da hasadı yapılmış (ürünü alınan) tarlalar silinir
+        // Hasadı yapılanı: eğer kuruduysa ya da (ürün hiç toplanmamışsa) inventory[type] > 0 değilse
+        if (f.dried || !f.type) {
+          // Animasyon para
+          let rect = f.div.getBoundingClientRect();
+          flyMoney(2, rect.left+FIELD_SIZE/2, rect.top+FIELD_SIZE/2, true);
+          money += 2;
+          updateMoneyBar();
+          if (f.timer) clearTimeout(f.timer);
+          f.div.remove();
+          fields.splice(i,1);
+          removedCount++;
+        }
+      }
+    };
+
+    // Diğer butonlar dummy
     document.getElementById("empty-btn").onclick = () => {
       alert("Bu buton henüz bir şey yapmıyor!");
     };
-    document.getElementById("settings-btn").onclick = () => {
-      alert("Ayarlar burada olacak!");
-    };
-    updateMoneyBar();
 
+    updateMoneyBar();
   </script>
 </body>
 </html>
