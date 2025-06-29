@@ -10,33 +10,37 @@
     #money-bar {width: 100vw;display: flex;align-items: center;justify-content: center;position: fixed;top: 0;left: 0;z-index: 50;background: rgba(255,255,255,0.38);box-shadow: 0 2px 15px rgba(30,60,30,0.05);height: 56px;font-size: 30px;font-weight: bold;letter-spacing: 2px;padding: 7px 0 7px 0;user-select: none;}
     #money-bar .dollar-emoji {font-size: 32px;margin-right: 13px;margin-top: 2px;filter: drop-shadow(0 1px 2px #8bce96);}
     #money-value {font-size: 31px;color: #25a16b;text-shadow: 0 1px 0 #fff, 0 1px 10px #98f1b3;margin-right: 6px;font-weight: 700;min-width: 70px;display: inline-block;text-align: right;letter-spacing: 1px;}
-    #field-area {flex: 1 1 auto;width: 100vw;height: 100vh;position: absolute;top: 0;left: 0;z-index: 1;}
-    .field {width: 160px;height: 160px;position: absolute;display: flex;align-items: center;justify-content: center;background: rgba(255,255,255,0.11);border-radius: 32px;box-shadow: 0 5px 22px 0 rgba(60,120,50,0.16), 0 1.5px 6px #a3d7a0 inset;cursor: pointer;transition: box-shadow 0.13s, background 0.15s;z-index: 2;border: 3.5px solid #e2f6e2;backdrop-filter: blur(2px);}
+    #field-area {width: 100vw;height: calc(100vh - 115px);margin-top: 56px;position: relative;z-index: 1;display: flex;justify-content: center;}
+    #field-grid {width: 100vw;height: 100%;display: flex;flex-wrap: wrap;align-content: flex-start;position: relative;justify-content: center;}
+    .field {width: 90px;height: 90px;position: relative;display: flex;align-items: center;justify-content: center;background: rgba(255,255,255,0.11);border-radius: 18px;box-shadow: 0 4px 12px 0 rgba(60,120,50,0.11), 0 1.5px 6px #a3d7a0 inset;cursor: pointer;transition: box-shadow 0.13s, background 0.15s;z-index: 2;border: 2px solid #e2f6e2;margin:0 0.5px 1px 0.5px;overflow: visible;}
     .field-content {position: absolute;top: 0;left: 0;width: 100%;height: 100%;display: flex;align-items: center;justify-content: center;}
-    .field-plot {width: 160px;height: 160px;position: absolute;top: 0;left: 0;pointer-events: none;z-index: 1;filter: drop-shadow(0 7px 16px rgba(0,0,0,0.14));border-radius: 28px;}
-    .field-crop {width: 130px;height: 130px;pointer-events: none;z-index: 2;filter: drop-shadow(0 6px 18px rgba(0,0,0,0.12));position: relative;}
-    .product-fly, .money-fly {position: absolute;width: 216px;height: 216px;pointer-events: none;z-index: 1001;transition: transform 2.1s cubic-bezier(.17,.67,.54,1.26), opacity 2.1s;will-change: transform, opacity;font-size: 100px;text-align: center;display: flex;align-items: center;justify-content: center;color: #25a16b;filter: drop-shadow(0 0 14px #d0ffd4);}
-    #bottom-bar {width: 100vw;max-width: 500px;display: flex;justify-content: space-around;align-items: center;background: rgba(60,120,50,0.10);border-radius: 34px 34px 0 0;box-shadow: 0 -3px 22px 0 rgba(100,160,90,0.10);padding: 14px 0 20px 0;position: fixed;left: 50%;bottom: 0;transform: translateX(-50%);z-index: 10;backdrop-filter: blur(1.5px);}
-    .game-btn {width: 70px;height: 70px;font-size: 38px;border: none;border-radius: 19px;background: #e9ffe1;box-shadow: 0 2px 8px 0 rgba(110,180,80,0.13);display: flex;align-items: center;justify-content: center;margin: 0 8px;transition: background 0.13s, transform 0.11s;cursor: pointer;position: relative;overflow: visible;}
+    .field-plot {width: 90px;height: 90px;position: absolute;top: 0;left: 0;pointer-events: none;z-index: 1;filter: drop-shadow(0 2px 8px rgba(0,0,0,0.10));border-radius: 14px;}
+    .field-crop {width: 68px;height: 68px;pointer-events: none;z-index: 2;filter: drop-shadow(0 2px 6px rgba(0,0,0,0.09));position: relative;}
+    .timer-bar-wrap {position: absolute;right: 4px;top: 4px;z-index: 4;display: flex;align-items: center;}
+    .timer-bar {height: 12px;border-radius: 7px;background: #d4f9a9;box-shadow: 0 0 3px #9ecc65;overflow: hidden;width: 58px;margin-right:5px;position:relative;}
+    .timer-bar-inner {height:100%;background:linear-gradient(90deg,#92d957,#f6c10e);border-radius:7px;width:100%;transition:width 0.9s linear;}
+    .timer-bar-text {font-size: 13px;color:#33631b;font-weight: bold;text-shadow: 0 1px 0 #fff;}
+    .product-fly, .money-fly {position: absolute;width: 110px;height: 110px;pointer-events: none;z-index: 1001;transition: transform 2.1s cubic-bezier(.17,.67,.54,1.26), opacity 2.1s;will-change: transform, opacity;font-size: 52px;text-align: center;display: flex;align-items: center;justify-content: center;color: #25a16b;filter: drop-shadow(0 0 14px #d0ffd4);}
+    #bottom-bar {width: 100vw;max-width: 480px;display: flex;justify-content: space-around;align-items: center;background: rgba(60,120,50,0.10);border-radius: 25px 25px 0 0;box-shadow: 0 -3px 18px 0 rgba(100,160,90,0.09);padding: 10px 0 16px 0;position: fixed;left: 50%;bottom: 0;transform: translateX(-50%);z-index: 10;backdrop-filter: blur(1.5px);}
+    .game-btn {width: 55px;height: 55px;font-size: 27px;border: none;border-radius: 13px;background: #e9ffe1;box-shadow: 0 2px 8px 0 rgba(110,180,80,0.13);display: flex;align-items: center;justify-content: center;margin: 0 8px;transition: background 0.13s, transform 0.11s;cursor: pointer;position: relative;overflow: visible;}
     .game-btn:active {background: #c2f6ba;transform: scale(0.93);}
-    #home-count {position: absolute;right: 10px;bottom: 5px;font-size: 20px;background: #fff;border-radius: 9px;padding: 3px 10px;box-shadow: 0 0 2px #999;color: #444;font-weight: 600;}
-    #plant-modal {display: none;position: fixed;top: 50%;left: 50%;transform: translate(-50%, -60%);background: #fafff7;border-radius: 26px;box-shadow: 0 4px 36px rgba(60,120,30,0.17);padding: 36px 26px 20px 26px;z-index: 100;text-align: center;min-width: 270px;}
-    .plant-choice-row {display: flex;justify-content: center;gap: 44px;margin: 0 0 5px 0;}
+    #home-count {position: absolute;right: 7px;bottom: 3px;font-size: 15px;background: #fff;border-radius: 7px;padding: 2px 7px;box-shadow: 0 0 2px #999;color: #444;font-weight: 600;}
+    #plant-modal {display: none;position: fixed;top: 50%;left: 50%;transform: translate(-50%, -60%);background: #fafff7;border-radius: 17px;box-shadow: 0 3px 16px rgba(60,120,30,0.12);padding: 22px 11px 13px 11px;z-index: 100;text-align: center;min-width: 180px;}
+    .plant-choice-row {display: flex;justify-content: center;gap: 25px;margin: 0 0 5px 0;}
     .plant-choice-wrap {display: flex;flex-direction: column;align-items: center;}
-    .plant-choice-img {width: 105px;height: 105px;cursor: pointer;border-radius: 16px;border: 4px solid #ecf7eb;box-shadow: 0 3px 14px rgba(80,120,50,0.11);transition: border 0.13s, transform 0.13s, box-shadow 0.13s;background: #f6fff2;margin-bottom: 4px;}
-    .plant-choice-img:active {border: 4px solid #bbffba;transform: scale(0.97);box-shadow: 0 1px 8px #befbc7;}
-    .plant-price {font-size: 20px;color: #29b56e;font-weight: 600;background: #e4ffd6;padding: 2px 13px;border-radius: 8px;box-shadow: 0 1px 2px #cdebc9;margin-bottom: 2px;}
-    #plant-modal button {margin: 18px 12px 0 12px;font-size: 19px;background: #f7e2e0;border: none;padding: 8px 20px;border-radius: 13px;cursor: pointer;transition: background 0.14s;color: #333;font-weight: 600;}
+    .plant-choice-img {width: 52px;height: 52px;cursor: pointer;border-radius: 9px;border: 3px solid #ecf7eb;box-shadow: 0 1px 7px rgba(80,120,50,0.11);transition: border 0.13s, transform 0.13s, box-shadow 0.13s;background: #f6fff2;margin-bottom: 2px;}
+    .plant-choice-img:active {border: 3px solid #bbffba;transform: scale(0.97);box-shadow: 0 1px 8px #befbc7;}
+    .plant-price {font-size: 15px;color: #29b56e;font-weight: 600;background: #e4ffd6;padding: 1px 8px;border-radius: 5px;box-shadow: 0 1px 2px #cdebc9;margin-bottom: 2px;}
+    #plant-modal button {margin: 10px 6px 0 6px;font-size: 15px;background: #f7e2e0;border: none;padding: 6px 13px;border-radius: 7px;cursor: pointer;transition: background 0.14s;color: #333;font-weight: 600;}
     #plant-modal button:active {background: #f3b9b2;}
-    #home-modal {display: none;position: fixed;top: 50%;left: 50%;transform: translate(-50%, -54%);background: #fdfff6;border-radius: 24px;box-shadow: 0 4px 28px rgba(80,130,30,0.13);padding: 32px 21px 21px 21px;z-index: 3000;min-width: 264px;text-align: center;user-select: none;}
-    .close-x {position: absolute;top: 11px;right: 16px;font-size: 32px;font-weight: 600;color: #d1735a;cursor: pointer;background: none;border: none;z-index: 1;transition: color 0.14s, transform 0.13s;}
+    #home-modal {display: none;position: fixed;top: 50%;left: 50%;transform: translate(-50%, -54%);background: #fdfff6;border-radius: 17px;box-shadow: 0 3px 14px rgba(80,130,30,0.09);padding: 19px 7px 7px 7px;z-index: 3000;min-width: 155px;text-align: center;user-select: none;}
+    .close-x {position: absolute;top: 5px;right: 10px;font-size: 20px;font-weight: 600;color: #d1735a;cursor: pointer;background: none;border: none;z-index: 1;transition: color 0.14s, transform 0.13s;}
     .close-x:active {color: #ff3c1e;transform: scale(1.08) rotate(9deg);}
-    .sell-row {display: flex;flex-direction: row;align-items: center;gap: 21px;margin: 22px 0 12px 0;justify-content: center;}
-    .sell-img {width: 63px;height: 63px;border-radius: 14px;background: #f8fff2;box-shadow: 0 1px 8px #d5ffe5;border: 2px solid #e0fae8;display: flex;align-items: center;justify-content: center;}
-    .sell-price {font-size: 23px;font-weight: 700;color: #228750;background: #e3ffe6;border-radius: 9px;padding: 4px 15px;box-shadow: 0 1px 2px #d2f8c9;margin-left: 3px;}
-    .sell-count {font-size: 19px;color: #5f6265;font-weight: 500;margin-right: 7px;background: #fafcff;padding: 2px 6px;border-radius: 7px;border: 1.3px solid #e1e3e3;}
-    @media (max-width: 700px) {.field, .field-plot { width: 120px; height: 120px;}.field-crop { width: 90px; height: 90px;}.product-fly, .money-fly { width: 162px; height: 162px; font-size: 72px;}.plant-choice-img { width: 74px; height: 74px;}.sell-img { width: 44px; height: 44px;}}
-    @media (max-width: 420px) {.field, .field-plot { width: 90px; height: 90px;}.field-crop { width: 60px; height: 60px;}.product-fly, .money-fly { width: 121px; height: 121px; font-size: 49px;}.plant-choice-img { width: 54px; height: 54px;}.sell-img { width: 31px; height: 31px;}#bottom-bar { max-width: 99vw;}#plant-modal { min-width: 140px; padding: 10px 3px 7px 3px;}#home-modal { min-width: 110px; padding: 10px 2px 6px 2px;}#money-bar { font-size: 18px;}#money-bar .dollar-emoji { font-size: 19px;}}
+    .sell-row {display: flex;flex-direction: row;align-items: center;gap: 12px;margin: 11px 0 7px 0;justify-content: center;}
+    .sell-img {width: 30px;height: 30px;border-radius: 7px;background: #f8fff2;box-shadow: 0 1px 4px #d5ffe5;border: 1px solid #e0fae8;display: flex;align-items: center;justify-content: center;}
+    .sell-price {font-size: 15px;font-weight: 700;color: #228750;background: #e3ffe6;border-radius: 5px;padding: 2px 7px;box-shadow: 0 1px 2px #d2f8c9;margin-left: 3px;}
+    .sell-count {font-size: 13px;color: #5f6265;font-weight: 500;margin-right: 4px;background: #fafcff;padding: 2px 5px;border-radius: 5px;border: 1.3px solid #e1e3e3;}
+    @media (max-width: 650px) {.field, .field-plot { width: 65px; height: 65px;}.field-crop { width: 40px; height: 40px;}.product-fly, .money-fly { width: 68px; height: 68px; font-size: 33px;}.plant-choice-img { width: 34px; height: 34px;}.sell-img { width: 21px; height: 21px;}}
   </style>
 </head>
 <body>
@@ -45,7 +49,9 @@
       <span class="dollar-emoji">💵</span>
       <span id="money-value">100</span>
     </div>
-    <div id="field-area"></div>
+    <div id="field-area">
+      <div id="field-grid"></div>
+    </div>
     <!-- Tarla Ekim Modalı -->
     <div id="plant-modal">
       <div class="plant-choice-row">
@@ -79,68 +85,59 @@
         <span class="sell-count" id="wheat-count">0</span>
         <span class="sell-img"><img src="img/wheat.webp" style="width:100%;height:100%"></span>
         <span class="sell-price" id="wheat-price">$0.00</span>
-        <button class="game-btn" style="width:40px;height:40px;font-size:22px;" onclick="sellProduct('wheat')">Sat</button>
+        <button class="game-btn" style="width:22px;height:22px;font-size:11px;" onclick="sellProduct('wheat')">Sat</button>
       </div>
       <div class="sell-row">
         <span class="sell-count" id="strawberry-count">0</span>
         <span class="sell-img"><img src="img/strawberry.png" style="width:100%;height:100%"></span>
         <span class="sell-price" id="strawberry-price">$0.00</span>
-        <button class="game-btn" style="width:40px;height:40px;font-size:22px;" onclick="sellProduct('strawberry')">Sat</button>
+        <button class="game-btn" style="width:22px;height:22px;font-size:11px;" onclick="sellProduct('strawberry')">Sat</button>
       </div>
     </div>
   </div>
   <script>
-    let fields = []; // {x,y,type, div, timer, dried}
+    let fields = []; // {type, dried, div, timer, created, row, col}
     let inventory = {wheat: 0, strawberry: 0};
     let homeCount = 0;
     let money = 100;
     let plantMode = false;
-    let lastPlantPos = {x:0, y:0};
-    let fieldArea = document.getElementById("field-area");
     const PRICES = {wheat: 40, strawberry: 60};
     const SELL_MINMAX = {wheat: [1.00,3.00], strawberry: [2.00,4.00]};
     let sellPrices = {wheat: 0, strawberry: 0};
     let priceInterval = null;
-    const FIELD_SIZE = 160;
+    const FIELD_SIZE = 90, FIELD_GAP = 1;
     const DRY_IMG = "img/Plot.webp";
     const IMAGES = {wheat: "img/wheat.webp", strawberry: "img/strawberry.png"};
     const PLOTS = {wheat: "img/Plot3.webp", strawberry: "img/PlotS3.webp"};
+    const FIELDS_PER_ROW = ()=>Math.floor(window.innerWidth/(FIELD_SIZE+FIELD_GAP));
+    const GRID_MAX = ()=>FIELDS_PER_ROW()*Math.floor((window.innerHeight-140)/(FIELD_SIZE+FIELD_GAP));
+    function updateMoneyBar() {document.getElementById("money-value").textContent = money.toFixed(2);}
+    document.getElementById("plant-btn").onclick = () => {plantMode = true;document.getElementById("plant-btn").style.background = "#f3d298";};
+    window.addEventListener('resize', redrawGrid);
 
-    function updateMoneyBar() {
-      document.getElementById("money-value").textContent = money.toFixed(2);
-    }
-    document.getElementById("plant-btn").onclick = () => {
-      plantMode = true;
-      document.getElementById("plant-btn").style.background = "#f3d298";
-    };
-
-    // ÇAKIŞMA KONTROLÜ
-    function isOverlap(x, y) {
-      for (let f of fields) {
-        if (!f) continue;
-        let fx = f.x, fy = f.y;
-        if (Math.abs(x-fx) < FIELD_SIZE-6 && Math.abs(y-fy) < FIELD_SIZE-6) return true;
+    function getNextGridPos() {
+      let grid = Array(GRID_MAX()).fill(false);
+      fields.forEach(f=>{
+        if(f.row!==undefined && f.col!==undefined) {
+          let idx=f.row*FIELDS_PER_ROW()+f.col;
+          if(grid[idx]!==undefined) grid[idx]=true;
+        }
+      });
+      for(let i=0;i<grid.length;i++) {
+        if(!grid[i]) return [Math.floor(i/FIELDS_PER_ROW()), i%FIELDS_PER_ROW()];
       }
-      return false;
+      return null;
     }
 
-    fieldArea.onclick = function(e) {
+    document.getElementById("field-area").onclick = function(e) {
       if (!plantMode) return;
-      if (e.target !== fieldArea) return;
-      const rect = fieldArea.getBoundingClientRect();
-      let x = e.clientX - rect.left - FIELD_SIZE/2;
-      let y = e.clientY - rect.top - FIELD_SIZE/2;
-      if (isOverlap(x, y)) {
-        plantMode = false;
-        document.getElementById("plant-btn").style.background = "#e9ffe1";
-        return;
-      }
-      lastPlantPos = {x, y};
+      let next = getNextGridPos();
+      if (!next) {plantMode=false;document.getElementById("plant-btn").style.background = "#e9ffe1";return;}
+      lastGrid = next;
       openModal();
       plantMode = false;
       document.getElementById("plant-btn").style.background = "#e9ffe1";
     };
-
     const plantModal = document.getElementById("plant-modal");
     function openModal() {
       plantModal.style.display = "block";
@@ -149,73 +146,111 @@
       document.getElementById('choose-strawberry').style.pointerEvents = money >= PRICES.strawberry ? 'auto' : 'none';
       document.getElementById('choose-wheat').style.pointerEvents = money >= PRICES.wheat ? 'auto' : 'none';
     }
-    function closeModal() {
-      plantModal.style.display = "none";
-    }
+    function closeModal() {plantModal.style.display = "none";}
     function choosePlant(type) {
       if (money < PRICES[type]) return;
-      addField(lastPlantPos.x, lastPlantPos.y, type);
-      flyMoney(PRICES[type], lastPlantPos.x + FIELD_SIZE/2, lastPlantPos.y + FIELD_SIZE/2, false);
+      addField(type, lastGrid[0], lastGrid[1]);
+      flyMoney(PRICES[type], getFieldCenterPx(lastGrid[0], lastGrid[1]), false);
       money -= PRICES[type];
       updateMoneyBar();
       closeModal();
     }
 
-    // Tarla ekle (ve 1 dakika sayaç)
-    function addField(x, y, type) {
-      let field = {x, y, type, dried: false};
-      let div = document.createElement("div");
-      field.div = div;
-      div.className = "field";
-      div.style.left = x + "px";
-      div.style.top = y + "px";
-      div.onclick = (ev) => {
-        ev.stopPropagation();
-        onFieldClick(div, field);
-      };
-      renderFieldContent(div, type, false);
-      fieldArea.appendChild(div);
-      fields.push(field);
-
-      // 1 dakika sonra kurut!
-      field.timer = setTimeout(()=>{
-        field.dried = true;
-        renderFieldContent(div, type, true);
-      }, 60000);
+    function getFieldCenterPx(row, col) {
+      let grid = document.getElementById("field-grid");
+      let left = grid.getBoundingClientRect().left;
+      let top = grid.getBoundingClientRect().top;
+      let x = left + col * (FIELD_SIZE+FIELD_GAP) + FIELD_SIZE/2;
+      let y = top + row * (FIELD_SIZE+FIELD_GAP) + FIELD_SIZE/2;
+      return [x,y];
     }
-    // Kuruma ve ekili/ekilmemiş görseliyle çiz
-    function renderFieldContent(div, type, dried) {
+
+    function addField(type, row, col) {
+      let grid = document.getElementById("field-grid");
+      let div = document.createElement("div");
+      div.className = "field";
+      div.style.left = "";
+      div.style.top = "";
+      let f = {type, dried: false, div, row, col, created: Date.now()};
+      div.onclick = ev=>{
+        ev.stopPropagation();
+        onFieldClick(div, f);
+      };
+      grid.appendChild(div);
+      fields.push(f);
+      renderFieldContent(f);
+      f.timer = setInterval(()=>updateFieldTimer(f), 1000);
+    }
+
+    function renderFieldContent(f) {
+      let div = f.div;
       div.innerHTML = "";
+      div.style.order = f.row*100+f.col;
+      div.style.margin = `0 ${FIELD_GAP/2}px 1px ${FIELD_GAP/2}px`;
       const fieldContent = document.createElement('div');
       fieldContent.className = 'field-content';
       const plotImg = document.createElement('img');
-      plotImg.src = dried ? DRY_IMG : PLOTS[type];
+      plotImg.src = f.dried ? DRY_IMG : PLOTS[f.type];
       plotImg.className = 'field-plot';
       fieldContent.appendChild(plotImg);
-      // Eğer kurumuşsa ürün yok!
-      if (!dried) {
+      if (!f.dried) {
         const cropImg = document.createElement('img');
-        cropImg.src = IMAGES[type];
+        cropImg.src = IMAGES[f.type];
         cropImg.className = 'field-crop';
         fieldContent.appendChild(cropImg);
       }
       div.appendChild(fieldContent);
+      // TIMER BAR
+      if (!f.dried) {
+        let wrap = document.createElement('div');
+        wrap.className = "timer-bar-wrap";
+        let bar = document.createElement('div');
+        bar.className = "timer-bar";
+        let inner = document.createElement('div');
+        inner.className = "timer-bar-inner";
+        bar.appendChild(inner);
+        let text = document.createElement('div');
+        text.className = "timer-bar-text";
+        wrap.appendChild(bar); wrap.appendChild(text);
+        div.appendChild(wrap);
+        f.timerBarInner = inner;
+        f.timerBarText = text;
+        updateFieldTimer(f,true);
+      }
+    }
+
+    function updateFieldTimer(f,init){
+      if (f.dried) return;
+      let elapsed = Math.floor((Date.now()-f.created)/1000);
+      let left = Math.max(0, 60 - elapsed);
+      if (left <= 0) {
+        clearInterval(f.timer);
+        f.dried = true;
+        renderFieldContent(f);
+      } else {
+        if(f.timerBarInner)f.timerBarInner.style.width = (left/60*100)+'%';
+        if(f.timerBarText)f.timerBarText.textContent = left+"s";
+      }
+    }
+
+    function redrawGrid(){
+      let grid = document.getElementById("field-grid");
+      grid.innerHTML = "";
+      fields.forEach(f=>{ renderFieldContent(f); grid.appendChild(f.div); });
     }
 
     // Hasat
-    function onFieldClick(div, field) {
-      if (field.dried) return;
-      for (let k=0;k<2;k++) {
-        setTimeout(()=>flyProduct(div, field.type), k*200);
-      }
+    function onFieldClick(div, f) {
+      if (f.dried) return;
+      flyProduct(div, f.type);
     }
     function flyProduct(div, type) {
       const rect = div.getBoundingClientRect();
       const img = document.createElement('img');
       img.src = IMAGES[type];
       img.className = "product-fly";
-      img.style.left = (rect.left + rect.width/2 - 108) + "px";
-      img.style.top = (rect.top + rect.height/2 - 108) + "px";
+      img.style.left = (rect.left + rect.width/2 - 55) + "px";
+      img.style.top = (rect.top + rect.height/2 - 55) + "px";
       img.style.opacity = 1;
       img.style.position = "fixed";
       img.style.transform = "scale(1)";
@@ -223,7 +258,7 @@
       const homeBtn = document.getElementById("home-btn");
       const hrect = homeBtn.getBoundingClientRect();
       setTimeout(()=>{
-        img.style.transform = `translate(${hrect.left-rect.left+20}px, ${hrect.top-rect.top+8}px) scale(0.45)`;
+        img.style.transform = `translate(${hrect.left-rect.left+8}px, ${hrect.top-rect.top+4}px) scale(0.5)`;
         img.style.opacity = 0.18;
       },30);
       setTimeout(()=>{
@@ -237,40 +272,37 @@
       document.getElementById("home-count").textContent = homeCount;
     }
 
-    // Para animasyonu (birden çok emoji, max 20)
-    function flyMoney(amount, fromX, fromY, toBar=true) {
-      let n = Math.floor(Math.min(Math.max(Math.round(amount), 1), 20));
+    function flyMoney(amount, [fromX, fromY], toBar=true) {
+      let n = Math.floor(Math.min(Math.max(Math.round(amount), 1), 10));
       for(let i=0;i<n;i++) {
         let dollar = document.createElement('div');
         dollar.className = "money-fly";
         dollar.innerHTML = "💵";
-        dollar.style.left = (fromX - 108) + "px";
-        dollar.style.top = (fromY - 108) + "px";
+        dollar.style.left = (fromX - 55) + "px";
+        dollar.style.top = (fromY - 55) + "px";
         dollar.style.opacity = 1;
         dollar.style.position = "fixed";
         dollar.style.transform = "scale(1)";
         if (n>1 && i===0) {
           let txt = document.createElement('span');
           txt.textContent = " +" + amount.toFixed(2);
-          txt.style.fontSize = "36px";
+          txt.style.fontSize = "20px";
           txt.style.fontWeight = "700";
           txt.style.color = "#227d54";
-          txt.style.marginLeft = "10px";
-          txt.style.marginTop = "19px";
+          txt.style.marginLeft = "4px";
+          txt.style.marginTop = "7px";
           dollar.appendChild(txt);
         }
         document.body.appendChild(dollar);
         const moneyBar = document.getElementById("money-bar");
         const rectBar = moneyBar.getBoundingClientRect();
         setTimeout(()=>{
-          let tx = rectBar.left + rectBar.width/2 - fromX + (Math.random()-0.5)*20;
-          let ty = rectBar.top + rectBar.height/2 - fromY + (Math.random()-0.5)*20;
+          let tx = rectBar.left + rectBar.width/2 - fromX + (Math.random()-0.5)*8;
+          let ty = rectBar.top + rectBar.height/2 - fromY + (Math.random()-0.5)*8;
           dollar.style.transform = `translate(${tx}px, ${ty}px) scale(0.6)`;
           dollar.style.opacity = 0.15;
-        },30+60*i);
-        setTimeout(()=>{
-          dollar.remove();
-        },2100+60*i);
+        },30+50*i);
+        setTimeout(()=>{dollar.remove();},2100+50*i);
       }
     }
 
@@ -293,6 +325,7 @@
       document.getElementById("wheat-price").textContent = "$" + sellPrices.wheat.toFixed(2);
       document.getElementById("strawberry-price").textContent = "$" + sellPrices.strawberry.toFixed(2);
     }
+
     function sellProduct(type) {
       let count = inventory[type];
       if (count <= 0) return;
@@ -300,7 +333,7 @@
       let total = count * price;
       let iconEl = document.querySelector(".sell-img img[src*='"+type+"']");
       let iconRect = iconEl.getBoundingClientRect();
-      flyMoney(total, iconRect.left + iconRect.width/2, iconRect.top + iconRect.height/2, true);
+      flyMoney(total, [iconRect.left + iconRect.width/2, iconRect.top + iconRect.height/2], true);
       money += total;
       inventory[type] = 0;
       homeCount -= count;
@@ -310,33 +343,24 @@
       document.getElementById(type+"-count").textContent = 0;
     }
 
-    // ❌ Tarlaları Sil (sadece kurumuş/hasadı yapılmış tarlalar silinir)
     document.getElementById("remove-btn").onclick = function() {
-      let removedCount = 0;
       for (let i=fields.length-1; i>=0; i--) {
         let f = fields[i];
-        // Sadece kurumuş ya da hasadı yapılmış (ürünü alınan) tarlalar silinir
-        // Hasadı yapılanı: eğer kuruduysa ya da (ürün hiç toplanmamışsa) inventory[type] > 0 değilse
-        if (f.dried || !f.type) {
-          // Animasyon para
+        if (f.dried) {
+          let grid = document.getElementById("field-grid");
           let rect = f.div.getBoundingClientRect();
-          flyMoney(2, rect.left+FIELD_SIZE/2, rect.top+FIELD_SIZE/2, true);
+          flyMoney(2, [rect.left+FIELD_SIZE/2, rect.top+FIELD_SIZE/2], true);
           money += 2;
           updateMoneyBar();
-          if (f.timer) clearTimeout(f.timer);
+          if (f.timer) clearInterval(f.timer);
           f.div.remove();
           fields.splice(i,1);
-          removedCount++;
         }
       }
     };
-
-    // Diğer butonlar dummy
-    document.getElementById("empty-btn").onclick = () => {
-      alert("Bu buton henüz bir şey yapmıyor!");
-    };
-
+    document.getElementById("empty-btn").onclick = () => {alert("Bu buton henüz bir şey yapmıyor!");};
     updateMoneyBar();
+    redrawGrid();
   </script>
 </body>
 </html>
