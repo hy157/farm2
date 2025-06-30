@@ -18,6 +18,7 @@
     .field-content {position: absolute;top: 0;left: 0;width: 100%;height: 100%;display: flex;align-items: center;justify-content: center;}
     .field-plot {width: 160px;height: 160px;position: absolute;top: 0;left: 0;pointer-events: none;z-index: 1;filter: drop-shadow(0 7px 16px rgba(0,0,0,0.14));border-radius: 28px;}
     .field-crop {width: 120px;height: 120px;pointer-events: none;z-index: 2;filter: drop-shadow(0 6px 18px rgba(0,0,0,0.12));position: relative;}
+    .worker-in-field {position:absolute;left:10px;bottom:7px;z-index:5;font-size:35px;opacity:0.60;pointer-events:none;transition:opacity 0.18s;}
     .timer-bar-wrap {position: absolute;right: 8px;top: 8px;z-index: 4;display: flex;align-items: center;}
     .timer-bar {height: 19px;border-radius: 11px;background: #d4f9a9;box-shadow: 0 0 4px #9ecc65;overflow: hidden;width: 100px;margin-right:8px;position:relative;}
     .timer-bar-inner {height:100%;background:linear-gradient(90deg,#92d957,#f6c10e);border-radius:11px;width:100%;transition:width 0.9s linear;}
@@ -25,8 +26,10 @@
     .product-fly, .money-fly {position: absolute;width: 216px;height: 216px;pointer-events: none;z-index: 1001;transition: transform 2.1s cubic-bezier(.17,.67,.54,1.26), opacity 2.1s;will-change: transform, opacity;font-size: 100px;text-align: center;display: flex;align-items: center;justify-content: center;color: #25a16b;filter: drop-shadow(0 0 14px #d0ffd4);}
     .gem-fly {position: absolute;width: 120px;height: 120px;pointer-events: none;z-index: 1001;transition: transform 1.4s cubic-bezier(.27,.87,.44,1.19), opacity 1.4s;will-change: transform, opacity;font-size: 56px;text-align: center;display: flex;align-items: center;justify-content: center;color: #2a90c6;filter: drop-shadow(0 0 8px #bbf3fc);}
     #bottom-bar {width: 100vw;max-width: 650px;display: flex;justify-content: space-around;align-items: center;background: rgba(60,120,50,0.10);border-radius: 45px 45px 0 0;box-shadow: 0 -3px 22px 0 rgba(100,160,90,0.10);padding: 24px 0 32px 0;position: fixed;left: 50%;bottom: 0;transform: translateX(-50%);z-index: 10;backdrop-filter: blur(1.5px);}
-    .game-btn {width: 110px;height: 110px;font-size: 60px;border: none;border-radius: 35px;background: #e9ffe1;box-shadow: 0 2px 16px 0 rgba(110,180,80,0.14);display: flex;align-items: center;justify-content: center;margin: 0 18px;transition: background 0.13s, transform 0.11s;cursor: pointer;position: relative;overflow: visible;}
-    .game-btn:active {background: #c2f6ba;transform: scale(0.94);}
+    .game-btn {width: 110px;height: 110px;font-size: 60px;border: none;border-radius: 35px;background: #e9ffe1;box-shadow: 0 2px 16px 0 rgba(110,180,80,0.14);display: flex;align-items: center;justify-content: center;margin: 0 18px;transition: background 0.13s;cursor: pointer;position: relative;overflow: visible;}
+    #plant-btn:active {background: #c2f6ba;}
+    #plant-btn {transition: none;}
+    .game-btn:active {background: #c2f6ba;}
     #plant-modal {display: none;position: fixed;top: 50%;left: 50%;transform: translate(-50%, -60%);background: #fafff7;border-radius: 28px;box-shadow: 0 4px 36px rgba(60,120,30,0.14);padding: 50px 22px 35px 22px;z-index: 100;text-align: center;min-width: 300px;}
     .plant-choice-row {display: flex;justify-content: center;gap: 65px;margin: 0 0 7px 0;}
     .plant-choice-wrap {display: flex;flex-direction: column;align-items: center;}
@@ -98,7 +101,7 @@
       flex-direction: column;
       gap: 8px;
       pointer-events: none;
-      opacity: 0.80;
+      opacity: 0.90;
       transition: opacity 0.3s;
       font-size: 19px;
     }
@@ -115,6 +118,8 @@
       user-select: none;
       filter: blur(0px);
       position: relative;
+      cursor: pointer;
+      pointer-events:auto;
     }
     .worker-indicator .timer {
       font-size: 15px;
@@ -173,7 +178,6 @@
       .worker-menu-btn.gem-btn {font-size:17px;}
       .worker-menu-btn.gem-btn .plus {font-size:9px;right:2px;bottom:0;}
     }
-    /* Tarla taşınırken stili */
     .dragging-field {
       opacity: 0.66 !important;
       z-index: 9999 !important;
@@ -264,6 +268,7 @@
     const DRY_IMG = "img/Plot.webp";
     const IMAGES = {wheat: "img/wheat.webp", strawberry: "img/strawberry.png"};
     const PLOTS = {wheat: "img/Plot3.webp", strawberry: "img/PlotS3.webp"};
+
     // ELMA BAR ANİMASYONU
     function updateGemBar(animated, amount) {
       const bar = document.getElementById("gem-value");
@@ -316,6 +321,7 @@
     document.getElementById("plant-btn").onclick = () => {
       plantMode = true;
       document.getElementById("plant-btn").style.background = "#f3d298";
+      setTimeout(()=>{document.getElementById("plant-btn").style.background = "#e9ffe1";},220);
     };
     document.getElementById("field-area").onclick = function(e) {
       if (!plantMode) return;
@@ -415,15 +421,11 @@
         cropImg.className = 'field-crop';
         fieldContent.appendChild(cropImg);
       }
-      if (!f.dried && f.workerId) {
+      // İşçi emojisi, sadece aktif işçi varsa ve süresi dolmadıysa
+      if (!f.dried && f.workerId && isWorkerActive(f.workerId)) {
         let workerIcon = document.createElement("span");
-        workerIcon.style.position = "absolute";
-        workerIcon.style.bottom = "7px";
-        workerIcon.style.left = "10px";
-        workerIcon.style.fontSize = "35px";
-        workerIcon.style.pointerEvents = "none";
-        workerIcon.textContent = f.type=="strawberry" ? "🍓👷‍♂️" : "🌾👷‍♂️";
-        workerIcon.title = "Bu tarla işçi tarafından otomatik toplanıyor";
+        workerIcon.className = "worker-in-field";
+        workerIcon.textContent = "👷‍♂️";
         fieldContent.appendChild(workerIcon);
       }
       div.appendChild(fieldContent);
@@ -459,7 +461,8 @@
       }
     }
     function onFieldClick(div, f) {
-      if (f.dried || f.workerId) return;
+      // Sadece tarlada işçi yoksa ve tarla kuru değilse toplayabilirsin
+      if (f.dried || (f.workerId && isWorkerActive(f.workerId))) return;
       flyProduct(div, f.type);
     }
     function flyProduct(div, type, isWorker) {
@@ -661,7 +664,13 @@
       workerList = workerList.filter(w=>w.id!==id);
       updateWorkerIndicators();
     }
-    // --- İŞÇİ BARINI ve KONTROL MENÜSÜNÜ GÜNCELLE ---
+    function isWorkerActive(workerId) {
+      let w = workerList.find(w=>w.id===workerId);
+      if(!w) return false;
+      if(w.expiresAt<Date.now()) return false;
+      return true;
+    }
+    // --- İŞÇİ BARINI ve MENÜSÜNÜ GÜNCELLE ---
     let workerMenuOpenId = null, workerMenuTimer = null;
     function updateWorkerIndicators() {
       let wrap = document.getElementById("worker-indicator-wrap");
@@ -675,69 +684,82 @@
         el.className = "worker-indicator";
         el.innerHTML = `${text} <span class="timer">${timer}</span>`;
         el.dataset.workerId = w.id;
-
-        // Uzun basma kontrolü
-        let pressT = null;
-        let menuEl = null;
-        function closeMenu() {
-          if(menuEl) { menuEl.remove(); menuEl=null; workerMenuOpenId=null;}
-        }
-        el.onmousedown = el.ontouchstart = function(ev) {
-          if(workerMenuOpenId) return;
-          let touch = (ev.touches && ev.touches[0]) || ev;
-          pressT = setTimeout(()=>{
-            workerMenuOpenId = w.id;
-            // Menü aç
-            menuEl = document.createElement("div");
-            menuEl.className = "worker-menu";
-            // ÇARPı
-            let btn1 = document.createElement("button");
-            btn1.className = "worker-menu-btn";
-            btn1.innerHTML = "❌";
-            btn1.title = "İşçiyi Sil";
-            btn1.onclick = (e)=>{ e.stopPropagation(); removeWorker(w.id); closeMenu();}
-            // DEVAM/TAMAM
-            let btn2 = document.createElement("button");
-            btn2.className = "worker-menu-btn";
-            btn2.innerHTML = "✅";
-            btn2.title = "Devam Et";
-            btn2.onclick = (e)=>{ e.stopPropagation(); closeMenu();}
-            // ELMA
-            let btn3 = document.createElement("button");
-            btn3.className = "worker-menu-btn gem-btn" + (gems<1?" disabled":"");
-            btn3.innerHTML = '<span class="plus">+1</span>💎';
-            btn3.title = "1 Elmas karşılığı +1 dakika ekle";
-            if(gems>=1){
-              btn3.onclick = (e)=>{
-                e.stopPropagation();
-                gems-=1;
-                w.expiresAt += 60000;
-                updateGemBar(true, 1);
-                closeMenu();
-              }
+        // Menü açma - KISA TIKLA
+        el.onclick = function(ev) {
+          if(workerMenuOpenId===w.id) return;
+          closeAllWorkerMenus();
+          workerMenuOpenId = w.id;
+          // Menü aç
+          let menuEl = document.createElement("div");
+          menuEl.className = "worker-menu";
+          // ÇARPı
+          let btn1 = document.createElement("button");
+          btn1.className = "worker-menu-btn";
+          btn1.innerHTML = "❌";
+          btn1.title = "İşçiyi Sil";
+          btn1.onclick = (e)=>{ e.stopPropagation(); removeWorker(w.id); closeAllWorkerMenus();}
+          // DEVAM/TAMAM
+          let btn2 = document.createElement("button");
+          btn2.className = "worker-menu-btn";
+          btn2.innerHTML = "✅";
+          btn2.title = "Devam Et";
+          btn2.onclick = (e)=>{ e.stopPropagation(); closeAllWorkerMenus();}
+          // ELMA
+          let btn3 = document.createElement("button");
+          btn3.className = "worker-menu-btn gem-btn" + (gems<1?" disabled":"");
+          btn3.innerHTML = '<span class="plus">+1</span>💎';
+          btn3.title = "1 Elmas karşılığı +1 dakika ekle";
+          if(gems>=1){
+            btn3.onclick = (e)=>{
+              e.stopPropagation();
+              gems-=1;
+              w.expiresAt += 60000;
+              updateGemBar(true, 1);
+              closeAllWorkerMenus();
             }
-            else btn3.disabled = true;
-            menuEl.appendChild(btn1); menuEl.appendChild(btn2); menuEl.appendChild(btn3);
-            el.appendChild(menuEl);
-            setTimeout(()=>{document.body.addEventListener("mousedown",menuBlurFn);},20);
-          }, 480);
-          function menuBlurFn(evt){
-            if(menuEl && !el.contains(evt.target)) closeMenu();
-            document.body.removeEventListener("mousedown",menuBlurFn);
           }
-        };
-        el.onmouseup = el.ontouchend = function(e){
-          clearTimeout(pressT);
+          else btn3.disabled = true;
+          menuEl.appendChild(btn1); menuEl.appendChild(btn2); menuEl.appendChild(btn3);
+          el.appendChild(menuEl);
+          // Menü dışında bir yere tıklandığında kapat
+          setTimeout(()=>{
+            document.body.addEventListener("mousedown",menuBlurFn);
+            document.body.addEventListener("touchstart",menuBlurFn);
+          },30);
+          function menuBlurFn(evt){
+            if(menuEl && !el.contains(evt.target)) closeAllWorkerMenus();
+            document.body.removeEventListener("mousedown",menuBlurFn);
+            document.body.removeEventListener("touchstart",menuBlurFn);
+          }
         };
         wrap.appendChild(el);
       }
+      workerMenuOpenId=null;
+    }
+    function closeAllWorkerMenus() {
+      let wrap = document.getElementById("worker-indicator-wrap");
+      let menus = wrap.querySelectorAll('.worker-menu');
+      menus.forEach(x=>x.remove());
+      workerMenuOpenId=null;
     }
     setInterval(()=>{
+      // işçi süresi dolduysa işçiyi kaldır
+      let now = Date.now();
+      for(let i=workerList.length-1;i>=0;i--) {
+        let w=workerList[i];
+        if(w.expiresAt<=now) {
+          removeWorker(w.id);
+        }
+      }
       for(let w of workerList) {
         if(!w.tarlaId) assignWorkerToField(w);
       }
       updateWorkerIndicators();
-    }, 2000);
+      // Alanlardaki işçi ikonlarını tazele
+      for(let f of fields) {
+        renderFieldContent(f);
+      }
+    }, 900);
     setInterval(()=>{
       for(let f of fields) if(!f.id) f.id = ("f"+Math.random()).slice(0,9);
     }, 6000);
