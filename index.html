@@ -124,12 +124,6 @@
       text-align: right;
       letter-spacing: 0.5px;
     }
-    .worker-indicator .maxinfo {
-      font-size: 13px;
-      color: #2a90c6;
-      margin-left: 7px;
-      opacity: 0.67;
-    }
     @media (max-width: 900px) {
       .field, .field-plot { width: 110px; height: 110px;}
       .field-crop { width: 80px; height: 80px;}
@@ -152,6 +146,13 @@
       #worker-modal .worker-img {width: 44px;height: 44px;font-size: 24px;}
       #worker-modal {font-size: 15px;}
       #worker-modal .worker-price {font-size: 14px;}
+    }
+    /* Tarla taşınırken stili */
+    .dragging-field {
+      opacity: 0.66 !important;
+      z-index: 9999 !important;
+      box-shadow: 0 0 40px 6px #fff9a8, 0 4px 40px 2px #96ca67;
+      border: 5px dashed #ffe171;
     }
   </style>
 </head>
@@ -330,6 +331,51 @@
       document.getElementById("field-area").appendChild(div);
       fields.push(f);
       f.timer = setInterval(()=>updateFieldTimer(f), 1000);
+
+      // --- Taşıma Özellikleri ---
+      let pressTimer = null, dragging = false, offsetX=0, offsetY=0, origX=0, origY=0;
+      function onPointerDown(ev) {
+        if(ev.type==="touchstart") { ev = ev.touches[0]; }
+        pressTimer = setTimeout(()=>{
+          dragging = true;
+          div.classList.add('dragging-field');
+          origX = f.x; origY = f.y;
+          offsetX = ev.clientX - f.x;
+          offsetY = ev.clientY - f.y;
+        }, 400);
+      }
+      function onPointerUp(ev) {
+        clearTimeout(pressTimer);
+        if(dragging) {
+          dragging = false;
+          div.classList.remove('dragging-field');
+          // Başka tarlayla çakışma kontrolü
+          let ok = true;
+          for(let ff of fields) {
+            if(ff===f) continue;
+            let dx = f.x-ff.x, dy = f.y-ff.y;
+            if(Math.abs(dx)<FIELD_SIZE-22 && Math.abs(dy)<FIELD_SIZE-22) { ok = false; break;}
+          }
+          if(!ok) { f.x=origX; f.y=origY; div.style.left=f.x+'px'; div.style.top=f.y+'px'; }
+        }
+      }
+      function onPointerMove(ev) {
+        if(!dragging) return;
+        ev.preventDefault();
+        let x, y;
+        if(ev.type.startsWith("touch")) { x=ev.touches[0].clientX; y=ev.touches[0].clientY; }
+        else { x=ev.clientX; y=ev.clientY; }
+        f.x = x - offsetX;
+        f.y = y - offsetY;
+        div.style.left = f.x + "px";
+        div.style.top = f.y + "px";
+      }
+      div.addEventListener("mousedown", onPointerDown);
+      div.addEventListener("touchstart", onPointerDown, {passive:false});
+      document.addEventListener("mouseup", onPointerUp);
+      document.addEventListener("touchend", onPointerUp);
+      document.addEventListener("mousemove", onPointerMove, {passive:false});
+      document.addEventListener("touchmove", onPointerMove, {passive:false});
     }
     function renderFieldContent(f) {
       let div = f.div;
@@ -528,10 +574,12 @@
       updateWorkerIndicators();
     }
     function assignWorkerToField(worker) {
+      // Her işçi sadece 1 tarlada ve çakışmasız çalışmalı!
       if(worker.tarlaId) {
         let f = fields.find(f=>f.id===worker.tarlaId);
         if(f) { f.workerId = null; f.workerLock = false; renderFieldContent(f);}
       }
+      // Yalnızca uygun ve başka işçi olmayan tarlalar!
       let candidate = fields.find(f=>
         !f.dried && f.type==worker.type && !f.workerId
       );
@@ -554,9 +602,8 @@
     }
     function startWorkerOnField(worker, field) {
       stopWorkerHarvest(worker);
-      let maxTick = Math.min(WORKER_MAX_HARVEST - worker.harvested, 1e5);
+      let remainTick = Math.min(WORKER_MAX_HARVEST - worker.harvested, 1e5);
       let intervalTime = (WORKER_DURATION) / WORKER_MAX_HARVEST;
-      let countTick = 0;
       worker.interval = setInterval(()=>{
         if(field.dried || field.workerId!==worker.id || Date.now()>worker.expiresAt || worker.harvested>=WORKER_MAX_HARVEST) {
           clearInterval(worker.interval);
@@ -566,7 +613,6 @@
         flyProduct(field.div, field.type, true);
         inventory[field.type]++;
         worker.harvested++;
-        countTick++;
         if(worker.harvested >= WORKER_MAX_HARVEST) {
           clearInterval(worker.interval);
           removeWorker(worker.id, true);
@@ -605,7 +651,7 @@
         let timer = `${min}:${(sec<10?"0":"")+sec}`;
         let el = document.createElement("div");
         el.className = "worker-indicator";
-        el.innerHTML = `${text} <span class="timer">${timer}</span><span class="maxinfo">${w.harvested}/${WORKER_MAX_HARVEST}</span>`;
+        el.innerHTML = `${text} <span class="timer">${timer}</span>`;
         wrap.appendChild(el);
       }
     }
