@@ -184,9 +184,30 @@
       box-shadow: 0 0 40px 6px #fff9a8, 0 4px 40px 2px #96ca67;
       border: 5px dashed #ffe171;
     }
+    /* -- Giriş Ekranı -- */
+    #start-screen {
+      position:fixed;left:0;top:0;width:100vw;height:100vh;
+      background:linear-gradient(120deg,#b2ffd5 0%,#eaffee 100%);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20000;
+    }
+    #start-screen h1 {
+      font-size: 44px;color: #35a86b;text-shadow:0 2px 18px #befee7;letter-spacing:2px;margin-bottom:12px;
+    }
+    #start-screen button {
+      font-size:29px;padding:18px 48px;margin:22px;border-radius:17px;background:#d7ffcf;color:#217b4e;font-weight:700;box-shadow:0 2px 16px #7bddc6;border:none;cursor:pointer;transition: background 0.12s;
+    }
+    #start-screen #load-btn {
+      font-size:19px;padding:12px 32px;margin:8px;border-radius:13px;background:#edf9fd;color:#226477;font-weight:600;box-shadow:0 1.5px 9px #bbdbe7;
+    }
+    #start-screen button:active {background: #c1f2c1;}
   </style>
 </head>
 <body>
+  <div id="start-screen">
+    <h1>Mobil Tarım Oyunu</h1>
+    <button id="play-btn">Başla</button>
+    <button id="load-btn" style="display:none;">Kaydı Yükle</button>
+  </div>
   <div id="game">
     <div id="money-bar">
       <span class="dollar-emoji">💵</span>
@@ -218,6 +239,8 @@
       <button class="game-btn" id="home-btn" title="Depo/Ev">🏠</button>
       <button class="game-btn" id="empty-btn" title="İşçi Kirala">🧺</button>
       <button class="game-btn" id="remove-btn" title="Tarlaları Sil">❌</button>
+      <button class="game-btn" id="save-btn" title="Oyunu Kaydet">💾</button>
+      <button class="game-btn" id="restart-btn" title="Oyunu Sıfırla">🔄</button>
     </div>
     <div id="home-modal">
       <button class="close-x" onclick="closeHomeModal()">×</button>
@@ -254,6 +277,26 @@
     <div id="worker-indicator-wrap"></div>
   </div>
   <script>
+    // --- Giriş Ekranı Fonksiyonları ---
+    const startScreen = document.getElementById('start-screen');
+    const playBtn = document.getElementById('play-btn');
+    const loadBtn = document.getElementById('load-btn');
+
+    if(localStorage.getItem('farmgame_save')) {
+      loadBtn.style.display = 'block';
+    }
+    playBtn.onclick = function() {
+      startScreen.style.display = 'none';
+    }
+    loadBtn.onclick = function() {
+      loadGame();
+      startScreen.style.display = 'none';
+    }
+    window.onload = () => {
+      startScreen.style.display = 'flex';
+    };
+
+    // --- Oyunun Eski Kodları ---
     let fields = [];
     let inventory = {wheat: 0, strawberry: 0};
     let money = 100;
@@ -269,7 +312,6 @@
     const IMAGES = {wheat: "img/wheat.webp", strawberry: "img/strawberry.png"};
     const PLOTS = {wheat: "img/Plot3.webp", strawberry: "img/PlotS3.webp"};
 
-    // ELMA BAR ANİMASYONU
     function updateGemBar(animated, amount) {
       const bar = document.getElementById("gem-value");
       if(!animated) {
@@ -684,27 +726,22 @@
         el.className = "worker-indicator";
         el.innerHTML = `${text} <span class="timer">${timer}</span>`;
         el.dataset.workerId = w.id;
-        // Menü açma - KISA TIKLA
         el.onclick = function(ev) {
           if(workerMenuOpenId===w.id) return;
           closeAllWorkerMenus();
           workerMenuOpenId = w.id;
-          // Menü aç
           let menuEl = document.createElement("div");
           menuEl.className = "worker-menu";
-          // ÇARPı
           let btn1 = document.createElement("button");
           btn1.className = "worker-menu-btn";
           btn1.innerHTML = "❌";
           btn1.title = "İşçiyi Sil";
           btn1.onclick = (e)=>{ e.stopPropagation(); removeWorker(w.id); closeAllWorkerMenus();}
-          // DEVAM/TAMAM
           let btn2 = document.createElement("button");
           btn2.className = "worker-menu-btn";
           btn2.innerHTML = "✅";
           btn2.title = "Devam Et";
           btn2.onclick = (e)=>{ e.stopPropagation(); closeAllWorkerMenus();}
-          // ELMA
           let btn3 = document.createElement("button");
           btn3.className = "worker-menu-btn gem-btn" + (gems<1?" disabled":"");
           btn3.innerHTML = '<span class="plus">+1</span>💎';
@@ -721,7 +758,6 @@
           else btn3.disabled = true;
           menuEl.appendChild(btn1); menuEl.appendChild(btn2); menuEl.appendChild(btn3);
           el.appendChild(menuEl);
-          // Menü dışında bir yere tıklandığında kapat
           setTimeout(()=>{
             document.body.addEventListener("mousedown",menuBlurFn);
             document.body.addEventListener("touchstart",menuBlurFn);
@@ -743,7 +779,6 @@
       workerMenuOpenId=null;
     }
     setInterval(()=>{
-      // işçi süresi dolduysa işçiyi kaldır
       let now = Date.now();
       for(let i=workerList.length-1;i>=0;i--) {
         let w=workerList[i];
@@ -755,7 +790,6 @@
         if(!w.tarlaId) assignWorkerToField(w);
       }
       updateWorkerIndicators();
-      // Alanlardaki işçi ikonlarını tazele
       for(let f of fields) {
         renderFieldContent(f);
       }
@@ -765,6 +799,82 @@
     }, 6000);
     updateMoneyBar();
     updateGemBar();
+
+    // -- SAVE/LOAD/RESTART FONKSİYONLARI --
+    function saveGame() {
+      let saveObj = {
+        fields: fields.map(f=>({
+          x: f.x, y: f.y, type: f.type, dried: f.dried, created: f.created
+        })),
+        inventory: {...inventory},
+        money, gems
+      };
+      localStorage.setItem('farmgame_save', JSON.stringify(saveObj));
+      showToast('Oyun Kaydedildi!');
+    }
+    function loadGame() {
+      let data = localStorage.getItem('farmgame_save');
+      if(!data) { showToast("Kayıt bulunamadı."); return; }
+      let saveObj = JSON.parse(data);
+      fields.forEach(f=>{
+        if(f.timer) clearInterval(f.timer);
+        f.div.remove();
+      });
+      fields = [];
+      (saveObj.fields||[]).forEach(f=>{
+        addField(f.x, f.y, f.type);
+        let lastF = fields[fields.length-1];
+        lastF.dried = f.dried;
+        lastF.created = f.created;
+        renderFieldContent(lastF);
+      });
+      inventory = {...saveObj.inventory};
+      money = saveObj.money;
+      gems = saveObj.gems;
+      updateMoneyBar();
+      updateGemBar();
+      updateHomeCount('wheat', 0);
+      updateHomeCount('strawberry', 0);
+      showToast('Kayıt Yüklendi!');
+    }
+    function restartGame() {
+      if(!confirm("Oyunu tamamen sıfırlamak istediğine emin misin?")) return;
+      fields.forEach(f=>{
+        if(f.timer) clearInterval(f.timer);
+        f.div.remove();
+      });
+      fields = [];
+      inventory = {wheat: 0, strawberry: 0};
+      money = 100;
+      gems = 10;
+      workerList = [];
+      updateMoneyBar();
+      updateGemBar();
+      updateWorkerIndicators();
+      localStorage.removeItem('farmgame_save');
+      showToast("Oyun sıfırlandı!");
+    }
+    document.getElementById('save-btn').onclick = saveGame;
+    document.getElementById('restart-btn').onclick = restartGame;
+    function showToast(msg) {
+      let t = document.createElement('div');
+      t.textContent = msg;
+      t.style.position = 'fixed';
+      t.style.bottom = '65px';
+      t.style.left = '50%';
+      t.style.transform = 'translateX(-50%)';
+      t.style.background = '#fff';
+      t.style.color = '#228752';
+      t.style.fontWeight = '600';
+      t.style.fontSize = '21px';
+      t.style.padding = '14px 33px';
+      t.style.borderRadius = '15px';
+      t.style.boxShadow = '0 3px 24px #9cf7cb';
+      t.style.zIndex = 999999;
+      document.body.appendChild(t);
+      setTimeout(()=>{t.style.opacity='0.1';},1700);
+      setTimeout(()=>{t.remove();},2000);
+    }
   </script>
 </body>
 </html>
