@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Mobil Tarım Oyunu</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
   <style>
     html, body {height: 100%;margin: 0;padding: 0;background: #c7f6b6;font-family: 'Segoe UI', sans-serif;overflow: hidden;touch-action: manipulation;user-select: none;}
     #game {width: 100vw;height: 100vh;display: flex;flex-direction: column;justify-content: space-between;align-items: center;}
@@ -25,11 +25,26 @@
     .timer-bar-text {font-size: 19px;color:#33631b;font-weight: bold;text-shadow: 0 1px 0 #fff;}
     .product-fly, .money-fly {position: absolute;width: 216px;height: 216px;pointer-events: none;z-index: 1001;transition: transform 2.1s cubic-bezier(.17,.67,.54,1.26), opacity 2.1s;will-change: transform, opacity;font-size: 100px;text-align: center;display: flex;align-items: center;justify-content: center;color: #25a16b;filter: drop-shadow(0 0 14px #d0ffd4);}
     .gem-fly {position: absolute;width: 120px;height: 120px;pointer-events: none;z-index: 1001;transition: transform 1.4s cubic-bezier(.27,.87,.44,1.19), opacity 1.4s;will-change: transform, opacity;font-size: 56px;text-align: center;display: flex;align-items: center;justify-content: center;color: #2a90c6;filter: drop-shadow(0 0 8px #bbf3fc);}
-    #bottom-bar {width: 100vw;max-width: 650px;display: flex;justify-content: space-around;align-items: center;background: rgba(60,120,50,0.10);border-radius: 45px 45px 0 0;box-shadow: 0 -3px 22px 0 rgba(100,160,90,0.10);padding: 24px 0 32px 0;position: fixed;left: 50%;bottom: 0;transform: translateX(-50%);z-index: 10;backdrop-filter: blur(1.5px);}
-    .game-btn {width: 110px;height: 110px;font-size: 60px;border: none;border-radius: 35px;background: #e9ffe1;box-shadow: 0 2px 16px 0 rgba(110,180,80,0.14);display: flex;align-items: center;justify-content: center;margin: 0 18px;transition: background 0.13s;cursor: pointer;position: relative;overflow: visible;}
+    #bottom-bar {width: 100vw;max-width: 700px;display: flex;justify-content: flex-start;align-items: center;background: rgba(60,120,50,0.10);border-radius: 45px 45px 0 0;box-shadow: 0 -3px 22px 0 rgba(100,160,90,0.10);padding: 24px 0 32px 0;position: fixed;left: 50%;bottom: 0;transform: translateX(-50%);z-index: 10;backdrop-filter: blur(1.5px);overflow-x:auto;scrollbar-width:none;}
+    .game-btn {width: 110px;height: 110px;font-size: 60px;border: none;border-radius: 35px;background: #e9ffe1;box-shadow: 0 2px 16px 0 rgba(110,180,80,0.14);display: flex;align-items: center;justify-content: center;margin: 0 10px;transition: background 0.13s;cursor: pointer;position: relative;overflow: visible;flex-shrink:0;}
     #plant-btn:active {background: #c2f6ba;}
     #plant-btn {transition: none;}
     .game-btn:active {background: #c2f6ba;}
+    @media (max-width: 700px) {
+      #bottom-bar {
+        max-width: 99vw !important;
+        padding: 8px 0 10px 0 !important;
+        border-radius: 22px 22px 0 0 !important;
+      }
+      .game-btn {
+        width: 46px !important;
+        height: 46px !important;
+        font-size: 25px !important;
+        margin: 0 4px !important;
+        border-radius: 13px !important;
+      }
+    }
+    #bottom-bar::-webkit-scrollbar {display: none;}
     #plant-modal {display: none;position: fixed;top: 50%;left: 50%;transform: translate(-50%, -60%);background: #fafff7;border-radius: 28px;box-shadow: 0 4px 36px rgba(60,120,30,0.14);padding: 50px 22px 35px 22px;z-index: 100;text-align: center;min-width: 300px;}
     .plant-choice-row {display: flex;justify-content: center;gap: 65px;margin: 0 0 7px 0;}
     .plant-choice-wrap {display: flex;flex-direction: column;align-items: center;}
@@ -80,15 +95,9 @@
       user-select: none;
       font-size: 19px;
     }
-    #worker-modal .worker-opt-row {
-      display: flex;justify-content: center;gap: 36px;margin-bottom: 17px;margin-top: 4px;
-    }
-    #worker-modal .worker-opt-wrap {
-      display: flex;flex-direction: column;align-items: center;
-    }
-    #worker-modal .worker-img {
-      width: 76px;height: 76px;border-radius: 13px;box-shadow: 0 3px 16px #b5f3ff;background: #fff;border: 3px solid #c8eaf9;display: flex;align-items: center;justify-content: center;font-size: 48px;margin-bottom: 8px;position: relative;
-    }
+    #worker-modal .worker-opt-row {display: flex;justify-content: center;gap: 36px;margin-bottom: 17px;margin-top: 4px;}
+    #worker-modal .worker-opt-wrap {display: flex;flex-direction: column;align-items: center;}
+    #worker-modal .worker-img {width: 76px;height: 76px;border-radius: 13px;box-shadow: 0 3px 16px #b5f3ff;background: #fff;border: 3px solid #c8eaf9;display: flex;align-items: center;justify-content: center;font-size: 48px;margin-bottom: 8px;position: relative;}
     #worker-modal .worker-price {font-size: 28px;color: #2a90c6;font-weight: 600;background: #e4fcff;padding: 4px 19px;border-radius: 13px;box-shadow: 0 1px 2px #b1e8f2;}
     #worker-modal button {margin: 13px 9px 0 9px;font-size: 21px;background: #bee9fa;border: none;padding: 10px 30px;border-radius: 14px;cursor: pointer;transition: background 0.14s;color: #2a3d4a;font-weight: 600;}
     #worker-modal button:active {background: #75daff;}
@@ -105,100 +114,23 @@
       transition: opacity 0.3s;
       font-size: 19px;
     }
-    .worker-indicator {
-      display: flex;align-items: center;gap: 6px;
-      background: #f2faffcc;
-      border-radius: 13px;
-      box-shadow: 0 2px 8px #d9f4ff;
-      padding: 6px 14px 6px 9px;
-      min-width: 74px;
-      font-size: 19px;
-      font-weight: 600;
-      color: #2986c6;
-      user-select: none;
-      filter: blur(0px);
-      position: relative;
-      cursor: pointer;
-      pointer-events:auto;
-    }
-    .worker-indicator .timer {
-      font-size: 15px;
-      font-weight: 500;
-      color: #45a8db;
-      margin-left: 2px;
-      min-width: 38px;
-      text-align: right;
-      letter-spacing: 0.5px;
-    }
-    .worker-menu {
-      display: flex;
-      align-items: center;
-      position: absolute;
-      right: 100%;
-      top: 50%;
-      transform: translateY(-50%);
-      background: #fff;
-      border-radius: 16px;
-      box-shadow: 0 1px 8px #a6d8ff, 0 0 0 3px #d8f0ff;
-      padding: 9px 9px 9px 12px;
-      gap: 13px;
-      z-index: 6;
-      animation: fadeWorkerMenu 0.24s;
-    }
-    @keyframes fadeWorkerMenu {
-      from { opacity:0; transform:translateY(-50%) scale(0.7);}
-      to { opacity:1; transform:translateY(-50%) scale(1);}
-    }
-    .worker-menu-btn {
-      background: #f3faff;
-      border: none;
-      border-radius: 50%;
-      width: 37px;
-      height: 37px;
-      font-size: 27px;
-      cursor: pointer;
-      transition: background 0.15s, transform 0.11s;
-      box-shadow: 0 0.5px 3px #d9f9ff;
-      display: flex; align-items: center; justify-content: center;
-      position: relative;
-    }
+    .worker-indicator {display: flex;align-items: center;gap: 6px;background: #f2faffcc;border-radius: 13px;box-shadow: 0 2px 8px #d9f4ff;padding: 6px 14px 6px 9px;min-width: 74px;font-size: 19px;font-weight: 600;color: #2986c6;user-select: none;filter: blur(0px);position: relative;cursor: pointer;pointer-events:auto;}
+    .worker-indicator .timer {font-size: 15px;font-weight: 500;color: #45a8db;margin-left: 2px;min-width: 38px;text-align: right;letter-spacing: 0.5px;}
+    .worker-menu {display: flex;align-items: center;position: absolute;right: 100%;top: 50%;transform: translateY(-50%);background: #fff;border-radius: 16px;box-shadow: 0 1px 8px #a6d8ff, 0 0 0 3px #d8f0ff;padding: 9px 9px 9px 12px;gap: 13px;z-index: 6;animation: fadeWorkerMenu 0.24s;}
+    @keyframes fadeWorkerMenu {from { opacity:0; transform:translateY(-50%) scale(0.7);}to { opacity:1; transform:translateY(-50%) scale(1);}}
+    .worker-menu-btn {background: #f3faff;border: none;border-radius: 50%;width: 37px;height: 37px;font-size: 27px;cursor: pointer;transition: background 0.15s, transform 0.11s;box-shadow: 0 0.5px 3px #d9f9ff;display: flex; align-items: center; justify-content: center;position: relative;}
     .worker-menu-btn:active { background: #ffe6e3; transform: scale(1.08);}
     .worker-menu-btn[disabled], .worker-menu-btn.disabled {opacity: 0.45; cursor: not-allowed;}
-    .worker-menu-btn.gem-btn {
-      color: #13aeea;
-      font-size: 25px;
-    }
+    .worker-menu-btn.gem-btn {color: #13aeea;font-size: 25px;}
     .worker-menu-btn.gem-btn[disabled], .worker-menu-btn.gem-btn.disabled { color: #b6e9ff;}
     .worker-menu-btn.gem-btn .plus {position: absolute;right:7px;bottom:3px;font-size:15px;font-weight:900;color:#19dbb2;}
-    @media (max-width: 900px) {
-      .worker-indicator {font-size: 13px;}
-      .worker-indicator {min-width: 46px; padding: 4px 7px;}
-      .worker-menu { padding:6px 6px 6px 7px;gap:8px;}
-      .worker-menu-btn {width:25px;height:25px;font-size:16px;}
-      .worker-menu-btn.gem-btn {font-size:17px;}
-      .worker-menu-btn.gem-btn .plus {font-size:9px;right:2px;bottom:0;}
-    }
-    .dragging-field {
-      opacity: 0.66 !important;
-      z-index: 9999 !important;
-      box-shadow: 0 0 40px 6px #fff9a8, 0 4px 40px 2px #96ca67;
-      border: 5px dashed #ffe171;
-    }
-    /* -- Giriş Ekranı -- */
-    #start-screen {
-      position:fixed;left:0;top:0;width:100vw;height:100vh;
-      background:linear-gradient(120deg,#b2ffd5 0%,#eaffee 100%);
-      display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20000;
-    }
-    #start-screen h1 {
-      font-size: 44px;color: #35a86b;text-shadow:0 2px 18px #befee7;letter-spacing:2px;margin-bottom:12px;
-    }
-    #start-screen button {
-      font-size:29px;padding:18px 48px;margin:22px;border-radius:17px;background:#d7ffcf;color:#217b4e;font-weight:700;box-shadow:0 2px 16px #7bddc6;border:none;cursor:pointer;transition: background 0.12s;
-    }
-    #start-screen #load-btn {
-      font-size:19px;padding:12px 32px;margin:8px;border-radius:13px;background:#edf9fd;color:#226477;font-weight:600;box-shadow:0 1.5px 9px #bbdbe7;
-    }
+    @media (max-width: 900px) {.worker-indicator {font-size: 13px;}.worker-indicator {min-width: 46px; padding: 4px 7px;}.worker-menu { padding:6px 6px 6px 7px;gap:8px;}.worker-menu-btn {width:25px;height:25px;font-size:16px;}.worker-menu-btn.gem-btn {font-size:17px;}.worker-menu-btn.gem-btn .plus {font-size:9px;right:2px;bottom:0;}}
+    .dragging-field {opacity: 0.66 !important;z-index: 9999 !important;box-shadow: 0 0 40px 6px #fff9a8, 0 4px 40px 2px #96ca67;border: 5px dashed #ffe171;}
+    /* Giriş ekranı stilleri */
+    #start-screen {position:fixed;left:0;top:0;width:100vw;height:100vh;background:linear-gradient(120deg,#b2ffd5 0%,#eaffee 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:20000;}
+    #start-screen h1 {font-size: 44px;color: #35a86b;text-shadow:0 2px 18px #befee7;letter-spacing:2px;margin-bottom:12px;}
+    #start-screen button {font-size:29px;padding:18px 48px;margin:22px;border-radius:17px;background:#d7ffcf;color:#217b4e;font-weight:700;box-shadow:0 2px 16px #7bddc6;border:none;cursor:pointer;transition: background 0.12s;}
+    #start-screen #load-btn {font-size:19px;padding:12px 32px;margin:8px;border-radius:13px;background:#edf9fd;color:#226477;font-weight:600;box-shadow:0 1.5px 9px #bbdbe7;}
     #start-screen button:active {background: #c1f2c1;}
   </style>
 </head>
@@ -218,7 +150,6 @@
       </span>
     </div>
     <div id="field-area"></div>
-    <!-- Tarla Ekim Modalı -->
     <div id="plant-modal">
       <div class="plant-choice-row">
         <div class="plant-choice-wrap">
@@ -277,26 +208,16 @@
     <div id="worker-indicator-wrap"></div>
   </div>
   <script>
-    // --- Giriş Ekranı Fonksiyonları ---
+    // --- Giriş Ekranı ---
     const startScreen = document.getElementById('start-screen');
     const playBtn = document.getElementById('play-btn');
     const loadBtn = document.getElementById('load-btn');
+    if(localStorage.getItem('farmgame_save')) loadBtn.style.display = 'block';
+    playBtn.onclick = () => startScreen.style.display = 'none';
+    loadBtn.onclick = () => { loadGame(); startScreen.style.display = 'none'; };
+    window.onload = () => startScreen.style.display = 'flex';
 
-    if(localStorage.getItem('farmgame_save')) {
-      loadBtn.style.display = 'block';
-    }
-    playBtn.onclick = function() {
-      startScreen.style.display = 'none';
-    }
-    loadBtn.onclick = function() {
-      loadGame();
-      startScreen.style.display = 'none';
-    }
-    window.onload = () => {
-      startScreen.style.display = 'flex';
-    };
-
-    // --- Oyunun Eski Kodları ---
+    // --- Oyun Değişkenleri ---
     let fields = [];
     let inventory = {wheat: 0, strawberry: 0};
     let money = 100;
@@ -314,10 +235,7 @@
 
     function updateGemBar(animated, amount) {
       const bar = document.getElementById("gem-value");
-      if(!animated) {
-        bar.textContent = gems;
-        return;
-      }
+      if(!animated) { bar.textContent = gems; return; }
       const old = Number(bar.textContent);
       const diff = gems - old;
       if(diff === 0) return;
@@ -328,10 +246,7 @@
         bar.textContent = val;
         bar.style.color = "#00d8fc";
         if(step < steps) setTimeout(animate, 20);
-        else {
-          bar.textContent = gems;
-          bar.style.color = "#2a90c6";
-        }
+        else { bar.textContent = gems; bar.style.color = "#2a90c6"; }
       }
       animate();
       flyGem(amount || diff);
@@ -404,7 +319,6 @@
       document.getElementById("field-area").appendChild(div);
       fields.push(f);
       f.timer = setInterval(()=>updateFieldTimer(f), 1000);
-      // --- Taşıma Özellikleri ---
       let pressTimer = null, dragging = false, offsetX=0, offsetY=0, origX=0, origY=0;
       function onPointerDown(ev) {
         if(ev.type==="touchstart") { ev = ev.touches[0]; }
@@ -463,7 +377,6 @@
         cropImg.className = 'field-crop';
         fieldContent.appendChild(cropImg);
       }
-      // İşçi emojisi, sadece aktif işçi varsa ve süresi dolmadıysa
       if (!f.dried && f.workerId && isWorkerActive(f.workerId)) {
         let workerIcon = document.createElement("span");
         workerIcon.className = "worker-in-field";
@@ -503,7 +416,6 @@
       }
     }
     function onFieldClick(div, f) {
-      // Sadece tarlada işçi yoksa ve tarla kuru değilse toplayabilirsin
       if (f.dried || (f.workerId && isWorkerActive(f.workerId))) return;
       flyProduct(div, f.type);
     }
